@@ -1,0 +1,272 @@
+id_estacion,estacion_ruta,tipo_servicio,tipo_servicio_agrupado,zona_largo,zona,corredor_servicio,gps_latitud,gps_longitud,Nombre_estacion
+1,7_AGOSTO,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Carrera 15,3445235,"-76,487,153",7_AGOSTO
+2,A. NARINO,Estacion,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,3419151,"-76,508,358",A. Narino
+3,A. SANIN,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Carrera 15,3443797,"-76,482,994",A. Sanin
+4,A01A,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A01A
+5,A01B,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A01B
+6,A02,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A02
+7,A03,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A03
+8,A04,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A04
+9,A05,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A05
+10,A06,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A06
+11,A11,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A11
+12,A11B,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A11B
+13,A12A,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A12A
+14,A12B,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A12B
+15,A12C,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A12C
+16,A12D,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A12D
+17,A13A,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A13A
+18,A13C,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A13C
+19,A13D,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A13D
+20,A14A,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A14A
+21,A14B,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A14B
+22,A17A,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A17A
+23,A17B,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A17B
+24,A17C,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A17C
+25,A17D,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A17D
+26,A17E,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A17E
+27,A17F,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A17F
+28,A18,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A18
+29,A19A,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A19A
+30,A19B,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A19B
+31,A21,Rutas,Alimentadoras,Zona 2 - Menga,Dos,Ruta,0,0,A21
+32,A22,Rutas,Alimentadoras,Zona 2 - Menga,Dos,Ruta,0,0,A22
+33,A23,Rutas,Alimentadoras,Zona 2 - Menga,Dos,Ruta,0,0,A23
+34,A31,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A31
+35,A32,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A32
+36,A33,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A33
+37,A35A,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A35A
+38,A36,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A36
+39,A37A,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A37A
+40,A37B,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A37B
+41,A41A,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A41A
+42,A42B,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A42B
+43,A44A,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A44A
+44,A44B,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A44B
+45,A46,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A46
+46,A47,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A47
+47,A52,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A52
+48,A54,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A54
+49,A55,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A55
+50,A55S,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A55S
+51,A56,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A56
+52,A57,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A57
+53,A61,Rutas,Alimentadoras,Zona 6 - Simón Bolívar,Seis,Ruta,0,0,A61
+54,A62,Rutas,Alimentadoras,Zona 6 - Simón Bolívar,Seis,Ruta,0,0,A62
+55,A63,Rutas,Alimentadoras,Zona 6 - Simón Bolívar,Seis,Ruta,0,0,A63
+56,A64,Rutas,Alimentadoras,Zona 6 - Simón Bolívar,Seis,Ruta,0,0,A64
+57,A70,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A70
+58,A71,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A71
+59,A72A,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A72A
+60,A72B,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A72B
+61,A73,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A73
+62,A75,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A75
+63,A78A,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A78A
+64,A81,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A81
+65,A82,Rutas,Alimentadoras,Zona 8 - Calipso,Ocho,Ruta,0,0,A82
+66,A83,Rutas,Alimentadoras,Zona 8 - Calipso,Ocho,Ruta,0,0,A83
+67,A99,Prueba,Alimentadoras,Prueba,Prueba,Ruta,0,0,A99
+68,AGUABLANCA,Terminal,Estacion,Zona 5 - Aguablanca,Cinco,Aguablanca,341365,"-76,481,264",Aguablanca
+69,ALAMOS,Estacion,Estacion,Zona 2 - Menga,Dos,Avenida 3,3484514,"-76,513,337",Alamos
+70,ALCAZARES,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Oriental,3485662,"-76,494,347",Alcazares
+71,ALFONSO LOPEZ,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Oriental,3463947,"-76,483,882",Alfonso Lopez
+72,AMANECER,Estacion,Estacion,Zona 5 - Aguablanca,Cinco,Aguablanca,3421662,"-76,490,843",Amanecer
+73,AMERICAS,Estacion,Estacion,Zona 2 - Menga,Dos,Avenida 3,3463618,"-7,652,527",Americas
+74,ATANASIO,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Carrera 15,3444827,"-76,508,336",Atanasio
+75,BELALCAZAR,Estacion,Estacion,Zona 0 - Centro,Cuatro,Carrera 15,3444142,"-76,520,745",Belalcazar
+76,BRISAS DE MAYO,Mio_Cable,Estacion,Mio_Cable,Mio_Cable,Aerosuspendido,3417558,"-76,563,853",Brisas de mayo
+77,BUITRERA,Estacion,Estacion,Zona 1 - Sur,Uno,Calle 5,3372691,"-76,540,206",Buitrera
+78,C. MODELO,Estacion,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,3416491,"-76,511,136",C. Modelo
+79,CABLE CANAVERALEJO,Mio_Cable,Estacion,Mio_Cable,Mio_Cable,Aerosuspendido,3415219,"-76,549,202",Cable canaveralejo
+80,CALDAS,Estacion,Estacion,Zona 7 - Cañaveralaejo,Uno,Calle 5,3394059,"-76,545,966",Caldas
+81,CALIMA,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Oriental,3486327,"-76,496,337",Calima
+82,CALIPSO,Terminal,Estacion,Zona 8 - Calipso,Cinco,Oriental,3427166,"-76,500,126",Calipso
+83,CANAVERALES,Estacion,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,3401766,"-7,652,303",Canaverales
+84,CANAVERALEJO,Terminal,Estacion,Zona 7 - Cañaveralaejo,Siete,Calle 5,3415007,"-76,549,242",Canaveralejo
+85,CAPRI,Estacion,Estacion,Zona 7 - Cañaveralaejo,Uno,Calle 5,3388027,"-76,544,957",Capri
+86,CENTRO,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 13,3448393,"-76,530,082",Centro
+87,CHAPINERO,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Carrera 15,34443,"-76,502,278",Chapinero
+88,CHIMINANGOS,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Carrera 1,3481707,"-76,498,031",Chiminangos
+89,CIEN PALOS,Estacion,Estacion,Zona 0 - Centro,Cero,Aguablanca,3439871,"-76,522,759",Cien Palos
+90,CONQUISTADORES,Estacion,Estacion,Zona 8 - Calipso,Cinco,Aguablanca,3427206,"-76,505,448",Conquistadores
+91,DEFAULT,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,0,0,DEFAULT
+92,DIAMANTE,Estacion,Estacion,Zona 8 - Calipso,Seis,Oriental,3422406,"-76,504,985",Diamante
+93,EL PONDAJE,Estacion,Estacion,Zona 8 - Calipso,Cinco,Oriental,343065,"-76,497,647",El Pondaje
+94,ERMITA,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 13,3453448,"-76,531,594",Ermita
+95,ESTADIO,Estacion,Estacion,Zona 7 - Cañaveralaejo,Siete,Calle 5,3431794,"-76,543,176",Estadio
+96,FATIMA,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Carrera 1,3462907,"-76,517,386",Fatima
+97,FLORA IND.,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Carrera 1,3478285,"-76,502,241",Flora Ind.
+98,FLORESTA,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Carrera 15,3445274,"-76,514,637",Floresta
+99,FRAY DAMIAN,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 13,3443628,"-7,652,884",Fray Damian
+100,GUADALUPE,Estacion,Estacion,Zona 7 - Cañaveralaejo,Uno,Calle 5,3409675,"-76,547,475",Guadalupe
+101,GUADUALES,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Oriental,3487166,"-76,499,731",Guaduales
+102,ITG SIMON BOLIVAR,Terminal,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,339758,-76.523.701,Simon Bolivar
+103,JORGE ELIECER,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Oriental,3468151,"-76,485,177",Jorge Eliecer
+104,LA RIVERA,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Oriental,3473709,"-76,486,954",La Rivera
+105,LAS CEIBAS,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Oriental,3459264,"-76,483,068",Las Ceibas
+106,LIDO,Estacion,Estacion,Zona 7 - Cañaveralaejo,Siete,Calle 5,341881,"-7,654,835",Lido
+107,LL RESTREPO,Estacion,Estacion,Zona 4 - Andrés Sanín,Cinco,Oriental,3437693,"-76,493,921",Ll Restrepo
+108,LLERAS CAMARGO,Mio_Cable,Estacion,Mio_Cable,Mio_Cable,Aerosuspendido,3421615,"-76,561,212",Lleras camargo
+109,LOS PINOS,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Oriental,3456437,"-76,484,226",Los Pinos
+110,M. RAMOS,Estacion,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,3406634,"-76,521,415",M. Ramos
+111,MANZANARES,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Carrera 1,3466231,"-76,513,329",Manzanares
+112,MELENDEZ,Estacion,Estacion,Zona 1 - Sur,Uno,Calle 5,3377115,"-76,542,816",Melendez
+113,MENGA,Terminal,Estacion,Zona 2 - Menga,Dos,Avenida 3,3489301,"-76,508,501",Menga
+114,METROP NORTE,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Oriental,3483456,"-76,490,149",Metrop Norte
+115,MZ. SABER,Estacion,Estacion,Zona 0 - Centro,Siete,Calle 5,3434913,"-76,540,989",Mz. Saber
+116,N FLORESTA,Estacion,Estacion,Zona 8 - Calipso,Cuatro,Oriental,3433652,"-76,496,147",N Floresta
+117,NO DETERMINADO,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,0,0,DEFAULT
+118,NUEVA BASE,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Oriental,3448765,"-76,488,233",Nueva Base
+119,NUEVO LATIR,Estacion,Estacion,Zona 5 - Aguablanca,Cinco,Aguablanca,3418618,"-76,487,008",Nuevo Latir
+120,P. CAYCEDO,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 13,3452522,"-7,653,134",P. Caycedo
+121,P. COMERCIO,Terminal,Estacion,Zona 3 - Paso Del Comercio,Tres,Carrera 1,3489885,"-76,492,631",P. Comercio
+122,P10A,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P10A
+123,P10D,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P10D
+124,P12A,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P12A
+125,P14A,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P14A
+126,P21A,Rutas,Pretroncal,Zona 1 - Sur,Pretroncal,Ruta,0,0,P21A
+127,P21B,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P21B
+128,P21C,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,P21C
+129,P21E,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P21E
+130,P24B,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P24B
+131,P27C,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,P27C
+132,P27D,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,P27D
+133,P30A,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,P30A
+134,P32,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,P32
+135,P40A,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P40A
+136,P40B,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P40B
+137,P42,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P42
+138,P47A,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P47A
+139,P47B,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P47B
+140,P51C,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P51C
+141,P52D,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P52D
+142,P60B,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P60B
+143,P62A,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P62A
+144,P62D,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P62D
+145,P72B,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,P72B
+146,P75,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,P75
+147,P82,Rutas,Pretroncal,Zona 8 - Calipso,Pretroncal,Ruta,0,0,P82
+148,P99,Prueba,Prueba,Prueba,Prueba,Ruta,0,0,P99
+149,PAMPALINDA,Estacion,Estacion,Zona 7 - Cañaveralaejo,Uno,Calle 5,3403817,"-76,546,829",Pampalinda
+150,PETECUY,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 15,3449075,"-76,527,937",Petecuy
+151,PILOTO,Estacion,Estacion,Zona 0 - Centro,Tres,Carrera 1,3460108,"-76,522,493",Piloto
+152,POPULAR,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Carrera 1,3469355,"-7,651,091",Popular
+153,PRADOS,Estacion,Estacion,Zona 2 - Menga,Dos,Avenida 3,3474467,"-76,519,595",Prados
+154,PRIMITIVO,Estacion,Estacion,Zona 8 - Calipso,Cinco,Aguablanca,3437361,"-76,517,659",Primitivo
+155,R712,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,R712
+156,R812,Rutas,Pretroncal,Zona 8 - Calipso,Pretroncal,Ruta,0,0,R812
+157,REFUGIO,Estacion,Estacion,Zona 7 - Cañaveralaejo,Uno,Calle 5,3398688,"-76,546,489",Refugio
+158,REP. ISRAEL,Estacion,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,3412167,"-76,515,648",Rep. Israel
+159,RIO CALI,Estacion,Estacion,Zona 0 - Centro,Tres,Carrera 1,3460456,"-76,525,246",Rio Cali
+160,SALOMIA,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Carrera 1,3473782,"-76,506,699",Salomia
+161,SAN BOSCO,Estacion,Estacion,Zona 0 - Centro,Siete,Carrera 15,3442279,"-76,532,534",San Bosco
+162,SAN LUIS,Estacion,Estacion,Zona 3 - Paso Del Comercio,Tres,Oriental,3476802,"-76,487,856",San Luis
+163,SAN NICOLAS,Estacion,Estacion,Zona 0 - Centro,Cero,Carrera 1,3458565,"-76,525,707",San Nicolas
+164,SAN PASCUAL,Estacion,Estacion,Zona 0 - Centro,Cero,Carrera 15,3442664,"-76,527,433",San Pascual
+165,SAN PEDRO,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 15,34544,"-76,530,136",San Pedro
+166,SANTA MONICA,Estacion,Estacion,Zona 8 - Calipso,Ocho,Aguablanca,3434672,"-7,651,402",Santa Monica
+167,SIMON BOLIVAR,Terminal,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,339758,"-76,523,701",Simon Bolivar
+168,ST. LIBRADA,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 5,3439812,"-7,653,702",St. Librada
+169,SUCRE,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 15,34439,"-7,652,642",Sucre
+170,T12,Rutas,Pretroncal,Zona 1 - Sur,Pretroncal,Ruta,0,0,T12
+171,T15,Rutas,Pretroncal,Zona 1 - Sur,Pretroncal,Ruta,0,0,T15
+172,T31,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,T31
+173,T40,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,T40
+174,T47,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,T47
+175,T50,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,T50
+176,T51,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,T51
+177,T52,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,T52
+178,T62,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,T62
+179,TEQUENDAMA,Estacion,Estacion,Zona 7 - Cañaveralaejo,Siete,Calle 5,3423483,"-76,547,024",Tequendama
+180,TORRE CALI,Estacion,Estacion,Zona 0 - Centro,Cero,Avenida 3,3456828,"-76,530,269",Torre Cali
+181,TREBOL,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Carrera 15,3443533,"-76,495,969",Trebol
+182,TRONCAL UNIDA,Estacion,Estacion,Zona 5 - Aguablanca,Cinco,Aguablanca,3424778,"-76,494,488",Troncal Unida
+183,U22,Prueba,Prueba,Prueba,Prueba,Ruta,0,0,U22
+184,ULPI LLOREDA,Estacion,Estacion,Zona 4 - Andrés Sanín,Cinco,Oriental,3445718,"-76,490,033",Ulpi Lloreda
+185,UND. DEPORT,Estacion,Estacion,Zona 7 - Cañaveralaejo,Siete,Calle 5,3414849,"-76,548,368",Und. Deport
+186,UNIVALLE,Estacion,Estacion,Zona 1 - Sur,Uno,Calle 5,337082,"-76,536,712",Univalle
+187,UNIVERSIDADES,Estacion,Estacion,Zona 1 - Sur,Uno,Calle 5,3366904,"-76,528,819",Universidades
+188,V. DEL SUR,Estacion,Estacion,Zona 6 - Simón Bolívar,Seis,Oriental,3410085,"-76,517,825",V. Del Sur
+189,VERSALLES,Estacion,Estacion,Zona 2 - Menga,Dos,Avenida 3,3461207,"-76,527,029",Versalles
+190,VILLA DEL LAGO,Estacion,Estacion,Zona 4 - Andrés Sanín,Cinco,Oriental,3441414,"-76,492,077",Villa Del Lago
+191,VILLACOLOMBIA,Estacion,Estacion,Zona 4 - Andrés Sanín,Cuatro,Carrera 15,344387,"-76,498,911",Villacolombia
+192,VILLANUEVA,Estacion,Estacion,Zona 8 - Calipso,Ocho,Aguablanca,3432175,"-76,510,363",Villanueva
+193,VIPASA,Estacion,Estacion,Zona 2 - Menga,Dos,Avenida 3,3478612,"-76,517,007",Vipasa
+194,E27,Rutas,Pretroncal,Zona 0 - Centro,Pretroncal,Ruta,0,0,E27
+195,.,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,0,0,DEFAULT
+196,E21,Rutas,Pretroncal,Zona 2 - Menga,Pretroncal,Ruta,0,0,E21
+197,A10,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A10
+198,A12E,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A12E
+199,A12F,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A12F
+200,A18B,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A18B
+201,A23B,Rutas,Alimentadoras,Zona 2 - Menga,Dos,Ruta,0,0,A23B
+202,A24,Rutas,Alimentadoras,Zona 2 - Menga,Dos,Ruta,0,0,A24
+203,A34,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A34
+204,A35,Rutas,Alimentadoras,Zona 3 - Paso Del Comercio,Tres,Ruta,0,0,A35
+205,A41C,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A41C
+206,A44C,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A44C
+207,A45B,Rutas,Alimentadoras,Zona 4 - Andrés Sanín,Cuatro,Ruta,0,0,A45B
+208,A53,Rutas,Alimentadoras,Zona 5 - Aguablanca,Cinco,Ruta,0,0,A53
+209,A65,Rutas,Alimentadoras,Zona 6 - Simón Bolívar,Seis,Ruta,0,0,A65
+210,A76,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A76
+211,A77,Rutas,Alimentadoras,Zona 7 - Cañaveralaejo,Siete,Ruta,0,0,A77
+212,A85,Rutas,Alimentadoras,Zona 8 - Calipso,Ocho,Ruta,0,0,A85
+213,C01,Rutas,Pretroncal,Pretroncal,Pretroncal,Ruta,0,0,C01
+214,C03,Rutas,Pretroncal,Pretroncal,Pretroncal,Ruta,0,0,C03
+215,C302,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,C302
+216,C320,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,C320
+217,C417,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,C417
+218,C471,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,C471
+219,C502,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,C502
+220,C520,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,C520
+221,E27B,Rutas,Pretroncal,Zona 0 - Centro,Pretroncal,Ruta,0,0,E27B
+222,E37,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,E37
+223,E41,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,E41
+224,E52,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,E52
+225,P10B,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P10B
+226,P14B,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P14B
+227,P17,Rutas,Pretroncal,Zona 1 - Sur,Pretroncal,Ruta,0,0,P17
+228,P24A,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P24A
+229,P24C,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P24C
+230,P30B,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,P30B
+231,P43,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P43
+232,P47C,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P47C
+233,P51,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P51
+234,P51A,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P51A
+235,P51B,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P51B
+236,P52A,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P52A
+237,P60D,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P60D
+238,P61,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P61
+239,P67,Rutas,Pretroncal,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,P67
+240,P71,Rutas,Pretroncal,Zona 1 - Sur,Pretroncal,Ruta,0,0,P71
+241,P72,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,P72
+242,P74,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,P74
+243,P76,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,P76
+244,P77,Rutas,Pretroncal,Zona 7 - Cañaveralaejo,Pretroncal,Ruta,0,0,P77
+245,P80A,Rutas,Pretroncal,Zona 8 - Calipso,Pretroncal,Ruta,0,0,P80A
+246,P83,Rutas,Pretroncal,Zona 8 - Calipso,Pretroncal,Ruta,0,0,P83
+247,P84A,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P84A
+248,P84B,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,P84B
+249,T37,Rutas,Pretroncal,Zona 3 - Paso Del Comercio,Pretroncal,Ruta,0,0,T37
+250,T42,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,T42
+251,T47A,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,T47A
+252,T47B,Rutas,Pretroncal,Zona 4 - Andrés Sanín,Pretroncal,Ruta,0,0,T47B
+253,T53,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,T53
+254,T57A,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,T57A
+255,TIERRA BLANCA,Mio_Cable,Estacion,Mio_Cable,Mio_Cable,Aerosuspendido,3419878,"-76,557,906",Tierra Blanca
+256,PLAZA TOROS,Estacion,Estacion,Zona 7 - Cañaveralaejo,Siete,Calle 5,3409675,"-76,547,475",Plaza Toros
+257,SANTA ROSA,Estacion,Estacion,Zona 0 - Centro,Cero,Calle 13,3447339,"-765,298",Santa Rosa
+258,'.',Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,0,0,DEFAULT
+259,R713,Rutas,Reservas,Reservas,Reservas,Reservas,0,0,R713
+260,R112,Rutas,Reservas,Reservas,Reservas,Reservas,0,0,R112
+261,R722,Rutas,Reservas,Reservas,Reservas,Reservas,0,0,R722
+262,R413,Rutas,Reservas,Reservas,Reservas,Reservas,0,0,R413
+263,R512,Rutas,Reservas,Reservas,Reservas,Reservas,0,0,R512
+264,SAL_BELA,Estacion,Estacion,Zona 0 - Centro,Cuatro,Carrera 15,3444142,"-76,520,745",Belalcazar
+265,Atipico,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,Sin Identificar,0,0,Atipico
+266,R412,Rutas,Reservas,Reservas,Reservas,Reservas,0,0,Atipico
+500,A07B,Rutas,Alimentadoras,Zona 0 - Centro,Cero,Ruta,0,0,A07B
+501,A13B,Rutas,Alimentadoras,Zona 1 - Sur,Uno,Ruta,0,0,A13B
+502,F62,Rutas,Alimentadoras,Zona 6 - Simón Bolívar,Pretroncal,Ruta,0,0,F62
+503,P52C,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P52C
+504,P53,Rutas,Pretroncal,Zona 5 - Aguablanca,Pretroncal,Ruta,0,0,P53

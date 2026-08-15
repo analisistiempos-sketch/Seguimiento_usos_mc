@@ -28,22 +28,19 @@ ANIOS_TRIMESTRALES = list(range(2019, 2026))
 ANIOS_DIARIOS = ["2026"]
 
 # Dimension de estaciones (opcional; habilita mapa, zona y tipo de servicio)
-DIM_ESTACION_CSV = Path(_env(
-    "USOS_DIM_ESTACION",
-    r"C:\Users\maortiz\OneDrive - metrocali.gov.co\Scripts\Informe_Presidencia\usosdiarios\dim_estacion.csv",
-))
+DIM_ESTACION_CSV = Path(_env("USOS_DIM_ESTACION", "dim_estacion.csv"))
+if not DIM_ESTACION_CSV.exists():
+    DIM_ESTACION_CSV = Path(r"C:\Users\maortiz\OneDrive - metrocali.gov.co\Scripts\Informe_Presidencia\usosdiarios\dim_estacion.csv")
 
 # Correcciones de nombres de estaciones (necesarias para la descarga)
-CORRECCIONES_JSON = Path(_env(
-    "USOS_CORRECCIONES",
-    r"C:\Users\maortiz\OneDrive - metrocali.gov.co\Scripts\Informe_Presidencia\usosdiarios\correcciones_estaciones.json",
-))
+CORRECCIONES_JSON = Path(_env("USOS_CORRECCIONES", "correcciones_estaciones.json"))
+if not CORRECCIONES_JSON.exists():
+    CORRECCIONES_JSON = Path(r"C:\Users\maortiz\OneDrive - metrocali.gov.co\Scripts\Informe_Presidencia\usosdiarios\correcciones_estaciones.json")
 
 # Calendario de días (habíl/sábado/domingo/festivo)
-DIM_CALENDARIO_XLSX = Path(_env(
-    "USOS_DIM_CALENDARIO",
-    r"C:\Users\maortiz\OneDrive - metrocali.gov.co\Reportes power Bi Oficina de Evaluación - Documentos\Datos_dimensiones\dim_Calendario.xlsx",
-))
+DIM_CALENDARIO_XLSX = Path(_env("USOS_DIM_CALENDARIO", "dim_Calendario.xlsx"))
+if not DIM_CALENDARIO_XLSX.exists():
+    DIM_CALENDARIO_XLSX = Path(r"C:\Users\maortiz\OneDrive - metrocali.gov.co\Reportes power Bi Oficina de Evaluación - Documentos\Datos_dimensiones\dim_Calendario.xlsx")
 
 # --- SharePoint (Microsoft Graph API) ---
 SP_SITE_HOST = _env("USOS_SP_HOST", "metrocaligovco.sharepoint.com")
