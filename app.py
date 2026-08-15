@@ -12,6 +12,7 @@ import data_loader
 import kpi
 import importlib
 import resumen_image
+import config
 
 st.sidebar.title("🛠️ Debug Info")
 st.sidebar.write(f"FUENTE: {config.FUENTE}")
