@@ -15,8 +15,14 @@ import resumen_image
 import config
 
 st.sidebar.title("🛠️ Debug Info")
-st.sidebar.write(f"FUENTE: {config.FUENTE}")
-st.sidebar.write(f"REPO: {config.GITHUB_REPO}")
+try:
+    st.sidebar.write(f"Secrets keys: {list(st.secrets.keys())}")
+    st.sidebar.write(f"USOS_FUENTE in Secrets: {st.secrets.get('USOS_FUENTE', 'Not Found')}")
+except Exception as e:
+    st.sidebar.write(f"Secrets error: {e}")
+
+st.sidebar.write(f"FUENTE cfg: {config.FUENTE}")
+st.sidebar.write(f"REPO cfg: {config.GITHUB_REPO}")
 st.sidebar.write(f"DATOS_DIR: {config.DATOS_ACTUAL_DIR}")
 try:
     from pathlib import Path
