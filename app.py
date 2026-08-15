@@ -12,6 +12,18 @@ import data_loader
 import kpi
 import importlib
 import resumen_image
+
+st.sidebar.title("🛠️ Debug Info")
+st.sidebar.write(f"FUENTE: {config.FUENTE}")
+st.sidebar.write(f"REPO: {config.GITHUB_REPO}")
+st.sidebar.write(f"DATOS_DIR: {config.DATOS_ACTUAL_DIR}")
+try:
+    from pathlib import Path
+    archivos = list(Path(config.DATOS_ACTUAL_DIR).glob("*.parquet"))
+    st.sidebar.write(f"Archivos locales: {len(archivos)}")
+except Exception as e:
+    st.sidebar.write(f"Error glob: {e}")
+
 importlib.reload(resumen_image)
 st.set_page_config(page_title="Tablero de Usos", layout="wide", initial_sidebar_state="expanded")
 
