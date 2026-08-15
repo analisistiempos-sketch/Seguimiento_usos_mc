@@ -134,9 +134,12 @@ def _coord(valor):
 
 
 def cargar_dim_estacion():
-    if not config.DIM_ESTACION_CSV.exists():
+    ruta = config.DIM_ESTACION_CSV
+    if not ruta.exists():
+        ruta = config.SHAREPOINT_DIR / "dim_estacion.csv"
+    if not ruta.exists():
         return None
-    df = pd.read_csv(config.DIM_ESTACION_CSV, sep=",", encoding="latin1")
+    df = pd.read_csv(ruta, sep=",", encoding="latin1")
     df = df.drop_duplicates(subset=["estacion_ruta"])
     df["gps_latitud"] = df["gps_latitud"].map(_coord)
     df["gps_longitud"] = df["gps_longitud"].map(_coord)
@@ -144,9 +147,12 @@ def cargar_dim_estacion():
 
 
 def cargar_calendario():
-    if not config.DIM_CALENDARIO_XLSX.exists():
+    ruta = config.DIM_CALENDARIO_XLSX
+    if not ruta.exists():
+        ruta = config.SHAREPOINT_DIR / "dim_Calendario.xlsx"
+    if not ruta.exists():
         return None
-    df = pd.read_excel(config.DIM_CALENDARIO_XLSX, usecols=["Fecha", "Dia.tipo", "Dia.nombre"])
+    df = pd.read_excel(ruta, usecols=["Fecha", "Dia.tipo", "Dia.nombre"])
     df["fecha"] = pd.to_datetime(df["Fecha"]).dt.normalize()
     df = df[["fecha", "Dia.tipo", "Dia.nombre"]].drop_duplicates(subset=["fecha"])
     return df

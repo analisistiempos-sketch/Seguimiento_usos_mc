@@ -90,4 +90,13 @@ def sync_desde_github(destino_dir):
             print(f"[github] descargado {nombre}")
         except Exception as e:
             print(f"[github] error descargando {nombre}: {e}")
+    for nombre in ("dim_estacion.csv", "dim_Calendario.xlsx"):
+        local = destino / nombre
+        if local.exists() and local.stat().st_size > 0:
+            continue
+        try:
+            descargar_parquet(nombre, local)
+            print(f"[github] descargado {nombre}")
+        except Exception:
+            pass
     return destino
