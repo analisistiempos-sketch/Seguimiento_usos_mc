@@ -14,23 +14,6 @@ import importlib
 import resumen_image
 import config
 
-st.sidebar.title("🛠️ Debug Info")
-try:
-    st.sidebar.write(f"Secrets keys: {list(st.secrets.keys())}")
-    st.sidebar.write(f"USOS_FUENTE in Secrets: {st.secrets.get('USOS_FUENTE', 'Not Found')}")
-except Exception as e:
-    st.sidebar.write(f"Secrets error: {e}")
-
-st.sidebar.write(f"FUENTE cfg: {config.FUENTE}")
-st.sidebar.write(f"REPO cfg: {config.GITHUB_REPO}")
-st.sidebar.write(f"DATOS_DIR: {config.DATOS_ACTUAL_DIR}")
-try:
-    from pathlib import Path
-    archivos = list(Path(config.DATOS_ACTUAL_DIR).glob("*.parquet"))
-    st.sidebar.write(f"Archivos locales: {len(archivos)}")
-except Exception as e:
-    st.sidebar.write(f"Error glob: {e}")
-
 importlib.reload(resumen_image)
 st.set_page_config(page_title="Tablero de Usos", layout="wide", initial_sidebar_state="expanded")
 
