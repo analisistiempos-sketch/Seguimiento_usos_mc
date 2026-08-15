@@ -6,7 +6,7 @@
 
 # --- Títulos de los paneles ---
 TITULO_LINEAS_RESUMEN = "Usos por Hora"
-TITULO_BARRAS = "Últimos {n} días"   # {n} se reemplaza por ULTIMOS_DIAS_BARRAS
+TITULO_BARRAS = "Usos Últimos {n} días"   # {n} se reemplaza por ULTIMOS_DIAS_BARRAS
 
 # --- Días del gráfico de barras del Resumen ---
 ULTIMOS_DIAS_BARRAS = 21

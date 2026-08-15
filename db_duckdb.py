@@ -21,12 +21,12 @@ def rutas_parquet(incluir_historico=True):
     rutas = []
     for src in [config.DATOS_ACTUAL_DIR] + [config.SHAREPOINT_DIR / a for a in config.ANIOS_DIARIOS]:
         if src.exists():
-            rutas += glob.glob(str(src / "*.parquet"))
+            rutas += [str(p) for p in src.rglob("*.parquet")]
     if incluir_historico:
         for anio in config.ANIOS_TRIMESTRALES:
             carpeta = config.SHAREPOINT_DIR / str(anio)
             if carpeta.exists():
-                rutas += glob.glob(str(carpeta / "*.parquet"))
+                rutas += [str(p) for p in carpeta.rglob("*.parquet")]
     return rutas
 
 

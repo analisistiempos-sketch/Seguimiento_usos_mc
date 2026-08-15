@@ -10,8 +10,9 @@ import streamlit as st
 import config_promedios
 import data_loader
 import kpi
+import importlib
 import resumen_image
-
+importlib.reload(resumen_image)
 st.set_page_config(page_title="Tablero de Usos", layout="wide", initial_sidebar_state="expanded")
 
 
@@ -140,8 +141,8 @@ def _figura_lineas(df, lineas):
             )
             es_hoy = False
         if es_hoy:
-            # Horas futuras quedan como None → Plotly no las traza (no cae a cero)
-            y_vals = [serie.get(h, 0) if h <= hora_actual else None for h in horas]
+            max_hora = max(serie.keys()) if not serie.empty else -1
+            y_vals = [serie.get(h, 0) if h <= max_hora else None for h in horas]
         else:
             y_vals = [serie.get(h, 0) for h in horas]
         fig.add_trace(go.Scatter(
@@ -149,79 +150,93 @@ def _figura_lineas(df, lineas):
             line=dict(color=linea["color"], dash=linea["estilo"]),
             connectgaps=False,
         ))
-    fig.update_layout(height=420, hovermode="x unified", xaxis=dict(dtick=1), legend_title_text=None)
+    fig.update_layout(
+        height=420, hovermode="x unified",
+        xaxis=dict(dtick=1), yaxis=dict(),
+        legend_title_text=None
+    )
     return fig
 
 
-# ------------------------------------------------------------------ SIDEBAR
-st.sidebar.title("Tablero de Usos")
-st.sidebar.caption("Usos del sistema de transporte")
-
+# ------------------------------------------------------------------ DATOS Y FILTROS
 dias = data_loader.listar_dias_actual()
 hoy = datetime.date.today()
-fecha_max_def = dias[-1] if dias else hoy
-fecha_min_def = max(hoy - datetime.timedelta(days=15), min(dias, default=hoy))
-
-fecha_min = st.sidebar.date_input("Desde", value=fecha_min_def, max_value=fecha_max_def)
-fecha_max = st.sidebar.date_input("Hasta", value=fecha_max_def, max_value=fecha_max_def)
-
-if fecha_min > fecha_max:
-    st.sidebar.error("La fecha inicial debe ser anterior a la final.")
-    st.stop()
-
-incluir_historico = st.sidebar.checkbox("Incluir histórico (2019-2025)", value=False)
+fecha_max = dias[-1] if dias else hoy
+dias_barras = getattr(config_promedios, "ULTIMOS_DIAS_BARRAS", 21)
+fecha_min = fecha_max - datetime.timedelta(days=dias_barras - 1)
+incluir_historico = False
 
 df = cargar_datos(fecha_min, fecha_max, incluir_historico)
-
 if df.empty:
     st.warning("No hay datos en el rango seleccionado.")
     st.stop()
 
 dim = cargar_dim()
 df_cc = _con_corredor(df, dim)
-excluidos = config_promedios.CORREDORES_EXCLUIDOS
+
+excluidos = getattr(config_promedios, "CORREDORES_EXCLUIDOS", [])
 if excluidos:
     df_cc = df_cc[~df_cc["corredor_servicio"].isin(excluidos)]
 
+st.sidebar.title("Filtros")
 corredores_disp = sorted(x for x in df_cc["corredor_servicio"].unique() if x)
 filtro_corr = st.sidebar.multiselect("Corredor", corredores_disp, placeholder="Todos")
 
-zonas_disp = sorted(x for x in df_cc["zona"].unique() if x)
-filtro_zona = st.sidebar.multiselect("Zona", zonas_disp, placeholder="Todas")
-
-if filtro_corr or filtro_zona:
-    m = (pd.Series(True, index=df_cc.index))
-    if filtro_corr:
-        m &= df_cc["corredor_servicio"].isin(filtro_corr)
-    if filtro_zona:
-        m &= df_cc["zona"].isin(filtro_zona)
+if filtro_corr:
+    m = df_cc["corredor_servicio"].isin(filtro_corr)
     est_opciones = sorted(df_cc.loc[m, "Nombre_estacion"].unique())
 else:
     est_opciones = sorted(df_cc["Nombre_estacion"].unique())
 
 filtro_est = st.sidebar.multiselect(
-    "Estaciones", options=est_opciones, format_func=nombre_amigable, placeholder="Todas"
+    "Ruta Estacion", options=est_opciones, format_func=nombre_amigable, placeholder="Todas"
 )
 
 df_filtrado = df_cc
 if filtro_corr:
     df_filtrado = df_filtrado[df_filtrado["corredor_servicio"].isin(filtro_corr)]
-if filtro_zona:
-    df_filtrado = df_filtrado[df_filtrado["zona"].isin(filtro_zona)]
 if filtro_est:
     df_filtrado = df_filtrado[df_filtrado["Nombre_estacion"].isin(filtro_est)]
 
-# ------------------------------------------------------------------ ENCABEZADO
-actualizacion = data_loader.fecha_actualizacion()
-if actualizacion:
-    texto_ultimo = f"Datos actualizados al: {actualizacion.strftime('%d/%m/%Y %I:%M %p')}"
-else:
-    texto_ultimo = "Sin datos"
-
-texto_rango = f"rango: {fecha_min.strftime('%d/%m/%Y')} a {fecha_max.strftime('%d/%m/%Y')}"
+filtro_zona = []
 
 # ------------------------------------------------------------------ RESUMEN
-col_linea, col_barras = st.columns(2)
+col_barras, col_linea = st.columns(2)
+
+with col_barras:
+    st.subheader(config_promedios.TITULO_BARRAS.format(n=config_promedios.ULTIMOS_DIAS_BARRAS))
+    ult_fecha = df["fecha"].max().date()
+    ini21 = ult_fecha - datetime.timedelta(days=config_promedios.ULTIMOS_DIAS_BARRAS - 1)
+    df21 = cargar_datos(ini21, ult_fecha, incluir_historico)
+    df21 = _aplicar_filtros(df21, dim, filtro_corr, filtro_est, filtro_zona)
+    bar21 = df21.groupby("fecha")["Uso_pago"].sum().reset_index()
+    bar21 = bar21.sort_values("fecha", ascending=False)
+    cal = cargar_cal()
+    if cal is not None and not cal.empty:
+        bar21 = bar21.merge(cal, on="fecha", how="left")
+        bar21["Tipo"] = bar21.apply(_tipo_dia, axis=1)
+        bar21["fecha_str"] = bar21["fecha"].dt.strftime("%d/%m/%Y") + " " + bar21["Dia.nombre"].str[:2].fillna("")
+        bar21["texto"] = bar21["Uso_pago"].apply(lambda x: f"{x:,.0f}".replace(",", "."))
+        fig_bar21 = px.bar(
+            bar21, x="Uso_pago", y="fecha_str", orientation="h", text="texto",
+            color="Tipo", color_discrete_map=COLOR_TIPOS_DIA,
+            labels={"Uso_pago": "Total Usos Pago", "fecha_str": "Día - Fecha", "Tipo": "Tipo de día"},
+        )
+    else:
+        bar21["fecha_str"] = bar21["fecha"].dt.strftime("%d/%m/%Y")
+        bar21["texto"] = bar21["Uso_pago"].apply(lambda x: f"{x:,.0f}".replace(",", "."))
+        fig_bar21 = px.bar(
+            bar21, x="Uso_pago", y="fecha_str", orientation="h", text="texto",
+            labels={"Uso_pago": "Total Usos Pago", "fecha_str": "Día - Fecha"},
+        )
+    fig_bar21.update_traces(textposition="inside", textfont=dict(size=16, color="white"), insidetextanchor="end")
+    fig_bar21.update_layout(
+        height=500, margin=dict(r=20, t=30, b=30),
+        xaxis_title="", yaxis_title="",
+        yaxis=dict(categoryorder="array", categoryarray=bar21["fecha_str"], dtick=1, automargin=True, ticklabelstandoff=20),
+        uniformtext_minsize=12, uniformtext_mode="show"
+    )
+    st.plotly_chart(fig_bar21, width="stretch", key="fig_barras_resumen")
 
 with col_linea:
     st.subheader(config_promedios.TITULO_LINEAS_RESUMEN)
@@ -232,42 +247,25 @@ with col_linea:
         f_fin_cfg = max(pd.Timestamp(x) for x in fechas_cfg).date()
         df_cfg = cargar_datos(f_ini_cfg, f_fin_cfg, incluir_historico)
         df_cfg = _aplicar_filtros(df_cfg, dim, filtro_corr, filtro_est, filtro_zona)
-        st.plotly_chart(_figura_lineas(df_cfg, lineas), width="stretch", key="fig_lineas_resumen")
+        fig_linea = _figura_lineas(df_cfg, lineas)
+        st.plotly_chart(fig_linea, width="stretch", key="fig_lineas_resumen")
     else:
+        fig_linea = go.Figure()
         st.info("Configura LINEAS en config_promedios.py (con mostrar: True).")
 
-with col_barras:
-    st.subheader(config_promedios.TITULO_BARRAS.format(n=config_promedios.ULTIMOS_DIAS_BARRAS))
-    ult_fecha = df["fecha"].max().date()
-    ini21 = ult_fecha - datetime.timedelta(days=config_promedios.ULTIMOS_DIAS_BARRAS - 1)
-    df21 = cargar_datos(ini21, ult_fecha, incluir_historico)
-    df21 = _aplicar_filtros(df21, dim, filtro_corr, filtro_est, filtro_zona)
-    bar21 = df21.groupby("fecha")["Uso_pago"].sum().reset_index()
-    bar21 = bar21.sort_values("fecha")
-    cal = cargar_cal()
-    if cal is not None and not cal.empty:
-        bar21 = bar21.merge(cal, on="fecha", how="left")
-        bar21["Tipo"] = bar21.apply(_tipo_dia, axis=1)
-        fig_bar21 = px.bar(
-            bar21, x="Uso_pago", y="fecha", orientation="h",
-            color="Tipo", color_discrete_map=COLOR_TIPOS_DIA,
-            labels={"Uso_pago": "Usos", "fecha": "Día", "Tipo": "Tipo de día"},
-        )
-    else:
-        fig_bar21 = px.bar(
-            bar21, x="Uso_pago", y="fecha", orientation="h",
-            labels={"Uso_pago": "Usos", "fecha": "Día"},
-        )
-    fig_bar21.update_layout(
-        height=420,
-        yaxis=dict(categoryorder="array", categoryarray=bar21["fecha"]),
-    )
-    st.plotly_chart(fig_bar21, width="stretch", key="fig_barras_resumen")
+# ------------------------------------------------------------------ ENCABEZADO Y PIE
+actualizacion = data_loader.fecha_actualizacion()
+if actualizacion:
+    texto_ultimo = f"Datos actualizados al: {actualizacion.strftime('%d/%m/%Y %I:%M %p')}"
+else:
+    texto_ultimo = "Sin datos"
 
-st.caption(f"**{texto_ultimo}** · {texto_rango}")
+col_pie1, col_pie2 = st.columns([1, 1])
+col_pie1.caption(f"**{texto_ultimo}**")
+col_pie2.markdown("<div style='text-align: right; color: gray; font-size: 0.85em; font-weight: bold; margin-top: 5px;'>DIRECCIÓN DE OPERACIONES - OFICINA DE EVALUACIÓN</div>", unsafe_allow_html=True)
 
 try:
-    png_bytes = resumen_image.exportar_bytes(texto_ultimo)
+    png_bytes = resumen_image.exportar_bytes(fig_linea, fig_bar21, texto_ultimo, "PNG")
     st.download_button(
         "Descargar imagen del Resumen",
         data=png_bytes,

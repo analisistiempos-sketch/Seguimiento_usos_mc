@@ -34,8 +34,8 @@ def listar_dias_actual():
     for src in [config.DATOS_ACTUAL_DIR] + [config.SHAREPOINT_DIR / a for a in config.ANIOS_DIARIOS]:
         if not src.exists():
             continue
-        for f in glob.glob(str(src / "*.parquet")):
-            d = _parse_fecha_nombre(Path(f).name)
+        for f in src.rglob("*.parquet"):
+            d = _parse_fecha_nombre(f.name)
             if d is not None:
                 dias.add(d)
     return sorted(dias)
@@ -74,12 +74,12 @@ def cargar_rango(fecha_min, fecha_max, incluir_historico=True):
     for src in [config.DATOS_ACTUAL_DIR] + [config.SHAREPOINT_DIR / a for a in config.ANIOS_DIARIOS]:
         if not src.exists():
             continue
-        for f in glob.glob(str(src / "*.parquet")):
-            d = _parse_fecha_nombre(Path(f).name)
+        for f in src.rglob("*.parquet"):
+            d = _parse_fecha_nombre(f.name)
             if d is None:
                 continue
             if fecha_min <= d <= fecha_max:
-                frames.append(_leer(f))
+                frames.append(_leer(str(f)))
 
     if not incluir_historico:
         if not frames:
@@ -93,14 +93,14 @@ def cargar_rango(fecha_min, fecha_max, incluir_historico=True):
         carpeta = config.SHAREPOINT_DIR / str(anio)
         if not carpeta.exists():
             continue
-        for f in glob.glob(str(carpeta / "*.parquet")):
-            fechas = pd.read_parquet(f, columns=["fecha"])
+        for f in carpeta.rglob("*.parquet"):
+            fechas = pd.read_parquet(str(f), columns=["fecha"])
             if fechas.empty:
                 continue
             fmin = fechas["fecha"].min().date()
             fmax = fechas["fecha"].max().date()
             if fmax >= fecha_min and fmin <= fecha_max:
-                frames.append(_leer(f))
+                frames.append(_leer(str(f)))
 
     if not frames:
         return pd.DataFrame(columns=COLUMNAS)
