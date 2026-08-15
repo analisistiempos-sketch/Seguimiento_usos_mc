@@ -3,6 +3,12 @@ from pathlib import Path
 
 
 def _env(key, default):
+    try:
+        import streamlit as st
+        if key in st.secrets:
+            return st.secrets[key]
+    except Exception:
+        pass
     return os.environ.get(key, default)
 
 
