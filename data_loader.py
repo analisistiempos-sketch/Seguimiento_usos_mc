@@ -119,6 +119,17 @@ def fecha_actualizacion():
     for src in [config.DATOS_ACTUAL_DIR] + [config.SHAREPOINT_DIR / a for a in config.ANIOS_DIARIOS]:
         archivo = src / f"{ultima.strftime('%d-%m-%Y')}.parquet"
         if archivo.exists():
+            try:
+                df = _leer(str(archivo))
+                if not df.empty and "hora" in df.columns:
+                    max_hora = df["hora"].max()
+                    if pd.notna(max_hora):
+                        # La hora del parquet suele ser 0-23
+                        return datetime.datetime.combine(ultima, datetime.time(hour=int(max_hora), minute=59))
+            except Exception:
+                pass
+            
+            # Fallback
             utc_time = datetime.datetime.fromtimestamp(archivo.stat().st_mtime, tz=datetime.timezone.utc)
             colombia_tz = datetime.timezone(datetime.timedelta(hours=-5))
             return utc_time.astimezone(colombia_tz)
