@@ -38,8 +38,8 @@ LINEAS = [
     {"mostrar": False, "desde": "2026-08-10", "hasta": "2026-08-14", "color": "#17BECF", "estilo": "dash",  "nombre": "Promedio 10-14 ago"},
     # --- Días a evaluar ---
     {"mostrar": False,  "fecha": "2026-08-10", "color": "#1F77B4", "estilo": "solid", "nombre": "Lunes 10"},
-    {"mostrar": True,  "fecha": "2026-08-14", "color": "#2CA02C", "estilo": "dash", "nombre": "Viernes 14"},
-    {"mostrar": True,  "fecha": "2026-08-08", "color": "#D62728", "estilo": "dash", "nombre": "Sábado 08"},
+    {"mostrar": True,  "fecha": "2026-08-16", "color": "#2CA02C", "estilo": "dash", "nombre": "Domingo 16"},
+    {"mostrar": True,  "fecha": "2026-08-09", "color": "#D62728", "estilo": "dash", "nombre": "Domingo 09"},
     {"mostrar": True,  "fecha": "2026-08-15", "color": "#9467BD", "estilo": "solid",  "nombre": "Sábado 15"},
 ]
 
