@@ -11,8 +11,12 @@ TITULO_BARRAS = "Usos Últimos {n} días"   # {n} se reemplaza por ULTIMOS_DIAS_
 # --- Días del gráfico de barras del Resumen ---
 ULTIMOS_DIAS_BARRAS = 21
 
+# --- True si quieres incluir el histórico 2019-2025 en los gráficos ---
+# (en la nube solo funcionará si el histórico está en el repo datos/)
+INCLUIR_HISTORICO = False
+
 # --- Corredores que NO quieres que aparezcan (se excluyen de filtros y gráficos) ---
-CORREDORES_EXCLUIDOS = ["Aerosuspendido"]
+CORREDORES_EXCLUIDOS = ["Aerosuspendido", "Sin Identificar"]
 
 # ============================================================
 # LÍNEAS DE LA GRÁFICA (días y/o promedios)

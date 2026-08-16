@@ -10,11 +10,8 @@ import streamlit as st
 import config_promedios
 import data_loader
 import kpi
-import importlib
 import resumen_image
-import config
 
-importlib.reload(resumen_image)
 st.set_page_config(page_title="Tablero de Usos", layout="wide", initial_sidebar_state="expanded")
 
 
@@ -168,7 +165,7 @@ hoy = datetime.date.today()
 fecha_max = dias[-1] if dias else hoy
 dias_barras = getattr(config_promedios, "ULTIMOS_DIAS_BARRAS", 21)
 fecha_min = fecha_max - datetime.timedelta(days=dias_barras - 1)
-incluir_historico = False
+incluir_historico = config_promedios.INCLUIR_HISTORICO
 
 df = cargar_datos(fecha_min, fecha_max, incluir_historico)
 if df.empty:
@@ -186,8 +183,15 @@ st.sidebar.title("Filtros")
 corredores_disp = sorted(x for x in df_cc["corredor_servicio"].unique() if x)
 filtro_corr = st.sidebar.multiselect("Corredor", corredores_disp, placeholder="Todos")
 
-if filtro_corr:
-    m = df_cc["corredor_servicio"].isin(filtro_corr)
+zonas_disp = sorted(x for x in df_cc["zona"].unique() if x)
+filtro_zona = st.sidebar.multiselect("Zona", zonas_disp, placeholder="Todas")
+
+if filtro_corr or filtro_zona:
+    m = pd.Series(True, index=df_cc.index)
+    if filtro_corr:
+        m &= df_cc["corredor_servicio"].isin(filtro_corr)
+    if filtro_zona:
+        m &= df_cc["zona"].isin(filtro_zona)
     est_opciones = sorted(df_cc.loc[m, "Nombre_estacion"].unique())
 else:
     est_opciones = sorted(df_cc["Nombre_estacion"].unique())
@@ -199,10 +203,10 @@ filtro_est = st.sidebar.multiselect(
 df_filtrado = df_cc
 if filtro_corr:
     df_filtrado = df_filtrado[df_filtrado["corredor_servicio"].isin(filtro_corr)]
+if filtro_zona:
+    df_filtrado = df_filtrado[df_filtrado["zona"].isin(filtro_zona)]
 if filtro_est:
     df_filtrado = df_filtrado[df_filtrado["Nombre_estacion"].isin(filtro_est)]
-
-filtro_zona = []
 
 # ------------------------------------------------------------------ RESUMEN
 col_barras, col_linea = st.columns(2)

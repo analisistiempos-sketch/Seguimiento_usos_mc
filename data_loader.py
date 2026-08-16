@@ -102,6 +102,15 @@ def cargar_rango(fecha_min, fecha_max, incluir_historico=True):
             if fmax >= fecha_min and fmin <= fecha_max:
                 frames.append(_leer(str(f)))
 
+    for f in glob.glob(str(config.SHAREPOINT_DIR / "Usos_*.parquet")):
+        fechas = pd.read_parquet(f, columns=["fecha"])
+        if fechas.empty:
+            continue
+        fmin = fechas["fecha"].min().date()
+        fmax = fechas["fecha"].max().date()
+        if fmax >= fecha_min and fmin <= fecha_max:
+            frames.append(_leer(f))
+
     if not frames:
         return pd.DataFrame(columns=COLUMNAS)
 

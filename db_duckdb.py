@@ -26,7 +26,8 @@ def rutas_parquet(incluir_historico=True):
         for anio in config.ANIOS_TRIMESTRALES:
             carpeta = config.SHAREPOINT_DIR / str(anio)
             if carpeta.exists():
-                rutas += [str(p) for p in carpeta.rglob("*.parquet")]
+                rutas += glob.glob(str(carpeta / "*.parquet"))
+        rutas += glob.glob(str(config.SHAREPOINT_DIR / "Usos_*.parquet"))
     return rutas
 
 
