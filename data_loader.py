@@ -119,7 +119,9 @@ def fecha_actualizacion():
     for src in [config.DATOS_ACTUAL_DIR] + [config.SHAREPOINT_DIR / a for a in config.ANIOS_DIARIOS]:
         archivo = src / f"{ultima.strftime('%d-%m-%Y')}.parquet"
         if archivo.exists():
-            return datetime.datetime.fromtimestamp(archivo.stat().st_mtime)
+            utc_time = datetime.datetime.fromtimestamp(archivo.stat().st_mtime, tz=datetime.timezone.utc)
+            colombia_tz = datetime.timezone(datetime.timedelta(hours=-5))
+            return utc_time.astimezone(colombia_tz)
     return None
 
 

@@ -71,8 +71,8 @@ GITHUB_BRANCH = _env("GITHUB_BRANCH", "main")
 GITHUB_TOKEN = _env("GITHUB_TOKEN", "")
 
 # --- WhatsApp (envío del resumen) ---
-# Número destino en formato internacional sin símbolos (ej: 573001234567)
-WHATSAPP_NUMERO = _env("USOS_WHATSAPP_NUMERO", "")
+# Números destino en formato internacional, separados por coma (ej: 573504809507,573012418483)
+WHATSAPP_NUMEROS = [x.strip() for x in _env("USOS_WHATSAPP_NUMERO", "").replace(";", ",").split(",") if x.strip()]
 
 # --- Correo (envío del resumen) ---
 SMTP_HOST = _env("SMTP_HOST", "smtp.gmail.com")
@@ -80,4 +80,5 @@ SMTP_PORT = _env("SMTP_PORT", "587")
 SMTP_USER = _env("SMTP_USER", "")
 SMTP_PASSWORD = _env("SMTP_PASSWORD", "")
 CORREO_ORIGEN = _env("CORREO_ORIGEN", "")
-CORREO_DESTINO = _env("CORREO_DESTINO", "miguel.ortiz01@gmail.com")
+# Destinos separados por coma (ej: miguel.ortiz01@gmail.com,lnavia@metrocali.gov.co)
+CORREOS_DESTINO = [x.strip() for x in _env("CORREO_DESTINO", "miguel.ortiz01@gmail.com").replace(";", ",").split(",") if x.strip()]

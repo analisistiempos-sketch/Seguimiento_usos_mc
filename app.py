@@ -125,8 +125,10 @@ def _fechas_lineas(lineas):
 
 def _figura_lineas(df, lineas):
     horas = list(range(24))
-    hoy = datetime.date.today()
-    hora_actual = datetime.datetime.now().hour
+    # Usar la hora de Colombia (UTC-5) para determinar si es "hoy"
+    colombia_tz = datetime.timezone(datetime.timedelta(hours=-5))
+    hoy = datetime.datetime.now(colombia_tz).date()
+    hora_actual = datetime.datetime.now(colombia_tz).hour
     fig = go.Figure()
     for linea in lineas:
         if "fecha" in linea:
