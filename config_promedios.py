@@ -18,6 +18,9 @@ INCLUIR_HISTORICO = False
 # --- Corredores que NO quieres que aparezcan (se excluyen de filtros y gráficos) ---
 CORREDORES_EXCLUIDOS = ["Aerosuspendido", "Sin Identificar"]
 
+# --- Zonas que NO quieres que aparezcan (se excluyen de filtros y gráficos) ---
+ZONAS_EXCLUIDAS = ["Prueba"]
+
 # ============================================================
 # LÍNEAS DE LA GRÁFICA (días y/o promedios)
 # ============================================================
