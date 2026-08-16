@@ -34,11 +34,11 @@ def listar_parquets():
     if r.status_code == 404:
         return []
     r.raise_for_status()
-    return [
-        e["name"]
+    return {
+        e["name"]: e["size"]
         for e in r.json()
         if e.get("type") == "file" and e["name"].lower().endswith(".parquet")
-    ]
+    }
 
 
 def descargar_parquet(nombre, destino):
@@ -81,9 +81,10 @@ def subir_parquet(nombre, origen):
 def sync_desde_github(destino_dir):
     destino = Path(destino_dir)
     destino.mkdir(parents=True, exist_ok=True)
-    for nombre in listar_parquets():
+    parquets = listar_parquets()
+    for nombre, size_remoto in parquets.items():
         local = destino / nombre
-        if local.exists() and local.stat().st_size > 0:
+        if local.exists() and local.stat().st_size == size_remoto:
             continue
         try:
             descargar_parquet(nombre, local)
