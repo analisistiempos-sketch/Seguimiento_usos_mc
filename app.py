@@ -97,6 +97,9 @@ def _aplicar_filtros(df, dim, corredores, estaciones, zonas=None):
     excluidos = config_promedios.CORREDORES_EXCLUIDOS
     if excluidos:
         df = df[~df["corredor_servicio"].isin(excluidos)]
+    zonas_excl = config_promedios.ZONAS_EXCLUIDAS
+    if zonas_excl:
+        df = df[~df["zona"].isin(zonas_excl)]
     if corredores:
         df = df[df["corredor_servicio"].isin(corredores)]
     if zonas:
@@ -178,6 +181,9 @@ df_cc = _con_corredor(df, dim)
 excluidos = getattr(config_promedios, "CORREDORES_EXCLUIDOS", [])
 if excluidos:
     df_cc = df_cc[~df_cc["corredor_servicio"].isin(excluidos)]
+zonas_excl = getattr(config_promedios, "ZONAS_EXCLUIDAS", [])
+if zonas_excl:
+    df_cc = df_cc[~df_cc["zona"].isin(zonas_excl)]
 
 st.sidebar.title("Filtros")
 corredores_disp = sorted(x for x in df_cc["corredor_servicio"].unique() if x)

@@ -52,6 +52,9 @@ def _aplicar_filtros(df, dim):
     excluidos = config_promedios.CORREDORES_EXCLUIDOS
     if excluidos:
         df = df[~df["corredor_servicio"].isin(excluidos)]
+    zonas_excl = getattr(config_promedios, "ZONAS_EXCLUIDAS", [])
+    if zonas_excl:
+        df = df[~df["zona"].isin(zonas_excl)]
     return df
 
 
