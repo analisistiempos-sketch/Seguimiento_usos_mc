@@ -243,7 +243,12 @@ with col_barras:
             bar21, x="Uso_pago", y="fecha_str", orientation="h", text="texto",
             labels={"Uso_pago": "Total Usos Pago", "fecha_str": "Día - Fecha"},
         )
-    fig_bar21.update_traces(textposition="inside", textfont=dict(size=16, color="white"), insidetextanchor="end")
+    fig_bar21.update_traces(
+        textposition="auto",
+        insidetextfont=dict(size=17, color="white"),
+        outsidetextfont=dict(size=17, color="black"),
+        insidetextanchor="end"
+    )
     fig_bar21.update_layout(
         height=500, margin=dict(r=20, t=30, b=30),
         xaxis_title="", yaxis_title="",
