@@ -106,14 +106,14 @@ def generar_barras():
             labels={"Uso_pago": "Total Usos Pago", "fecha_str": "Día - Fecha"},
         )
     fig_bar21.update_traces(
-        insidetextfont=dict(size=14, color="white"),
-        outsidetextfont=dict(size=14, color="black"),
+        insidetextfont=dict(size=12, color="white"),
+        outsidetextfont=dict(size=12, color="black"),
         insidetextanchor="end",
         cliponaxis=False
     )
     for trace in fig_bar21.data:
         if trace.x is not None:
-            trace.textposition = ["outside" if val is not None and val < 40000 else "inside" for val in trace.x]
+            trace.textposition = ["outside" if val is not None and val < 60000 else "inside" for val in trace.x]
     fig_bar21.update_layout(
         height=500, margin=dict(r=20, t=30, b=30),
         xaxis_title="", yaxis_title="",
