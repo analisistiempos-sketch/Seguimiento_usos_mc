@@ -32,31 +32,7 @@ ZONAS_EXCLUIDAS = ["Prueba"]
 # Y según el tipo:
 #   DÍA:       {"fecha": "AAAA-MM-DD", ...}
 #   PROMEDIO:  {"desde": "AAAA-MM-DD", "hasta": "AAAA-MM-DD", ...}
-LINEAS = [
-    # --- Promedios (agrega cuantos quieras; cada uno con su mostrar) ---
-    {"mostrar": False,  "desde": "2026-08-03", "hasta": "2026-08-06", "color": "#FF7F0E", "estilo": "dash",  "nombre": "Promedio 03-06 ago"},
-    {"mostrar": False, "desde": "2026-08-10", "hasta": "2026-08-14", "color": "#17BECF", "estilo": "dash",  "nombre": "Promedio 10-14 ago"},
-    # --- Días a evaluar ---
 
-
-    {"mostrar": True,  "fecha": "2026-08-09", "color": COLORES["azul_cielo_claro"], "estilo": "solid", "nombre": "Domingo 09"},
-    {"mostrar": True,  "fecha": "2026-08-14", "color": COLORES["azul_corporativo"], "estilo": "dash", "nombre": "Viernes 14"},
-    {"mostrar": True,  "fecha": "2026-08-16", "color": COLORES["violeta"], "estilo": "dash", "nombre": "Domingo 16"},
-    {"mostrar": True,  "fecha": "2026-08-17", "color": COLORES["morado_oscuro"], "estilo": "solid",  "nombre": "Lunes 17"},
-]
-
-# ============================================================
-# GUÍA DE COLORES COMPLETA
-# ============================================================
-# Puedes usar nombres en inglés o códigos HEX.
-#
-# Ejemplo:
-# color = "#1F77B4"
-# color = "royalblue"
-#
-# ============================================================
-
-# ESTILOS: "solid" (continuo) | "dash" (guiones) | "dot" (puntos)
 COLORES = {
     # AZULES
     "azul_marino": "#000080",
@@ -158,4 +134,32 @@ COLORES = {
     "blanco": "#FFFFFF",
 }
 
+
+
+
+LINEAS = [
+    # --- Promedios (agrega cuantos quieras; cada uno con su mostrar) ---
+    {"mostrar": False,  "desde": "2026-08-03", "hasta": "2026-08-06", "color": "#FF7F0E", "estilo": "dash",  "nombre": "Promedio 03-06 ago"},
+    {"mostrar": False, "desde": "2026-08-10", "hasta": "2026-08-14", "color": "#17BECF", "estilo": "dash",  "nombre": "Promedio 10-14 ago"},
+    # --- Días a evaluar ---
+
+
+    {"mostrar": True,  "fecha": "2026-08-09", "color": COLORES["azul_cielo_claro"], "estilo": "solid", "nombre": "Domingo 09"},
+    {"mostrar": True,  "fecha": "2026-08-14", "color": COLORES["azul_corporativo"], "estilo": "dash", "nombre": "Viernes 14"},
+    {"mostrar": True,  "fecha": "2026-08-16", "color": COLORES["violeta"], "estilo": "dash", "nombre": "Domingo 16"},
+    {"mostrar": True,  "fecha": "2026-08-17", "color": COLORES["morado_oscuro"], "estilo": "solid",  "nombre": "Lunes 17"},
+]
+
+# ============================================================
+# GUÍA DE COLORES COMPLETA
+# ============================================================
+# Puedes usar nombres en inglés o códigos HEX.
+#
+# Ejemplo:
+# color = "#1F77B4"
+# color = "royalblue"
+#
+# ============================================================
+
+# ESTILOS: "solid" (continuo) | "dash" (guiones) | "dot" (puntos)
 
