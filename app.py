@@ -244,8 +244,8 @@ with col_barras:
             labels={"Uso_pago": "Total Usos Pago", "fecha_str": "Día - Fecha"},
         )
     fig_bar21.update_traces(
-        insidetextfont=dict(size=17, color="white"),
-        outsidetextfont=dict(size=17, color="black"),
+        insidetextfont=dict(size=14, color="white"),
+        outsidetextfont=dict(size=14, color="black"),
         insidetextanchor="end",
         cliponaxis=False
     )
