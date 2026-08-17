@@ -244,11 +244,15 @@ with col_barras:
             labels={"Uso_pago": "Total Usos Pago", "fecha_str": "Día - Fecha"},
         )
     fig_bar21.update_traces(
-        textposition="auto",
         insidetextfont=dict(size=17, color="white"),
         outsidetextfont=dict(size=17, color="black"),
-        insidetextanchor="end"
+        insidetextanchor="end",
+        cliponaxis=False
     )
+    for trace in fig_bar21.data:
+        if trace.x is not None:
+            trace.textposition = ["outside" if val is not None and val < 40000 else "inside" for val in trace.x]
+    
     fig_bar21.update_layout(
         height=500, margin=dict(r=20, t=30, b=30),
         xaxis_title="", yaxis_title="",
