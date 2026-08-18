@@ -124,7 +124,7 @@ def _fechas_lineas(lineas):
 
 
 def _figura_lineas(df, lineas):
-    horas = list(range(24))
+    horas = list(range(4, 24))
     # Usar la hora de Colombia (UTC-5) para determinar si es "hoy"
     colombia_tz = datetime.timezone(datetime.timedelta(hours=-5))
     hoy = datetime.datetime.now(colombia_tz).date()

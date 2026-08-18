@@ -135,7 +135,7 @@ def generar_lineas():
     dim = data_loader.cargar_dim_estacion()
     df_cfg = _aplicar_filtros(df_cfg, dim)
 
-    horas = list(range(24))
+    horas = list(range(4, 24))
     hoy = datetime.date.today()
     fig = go.Figure()
     for linea in lineas:
