@@ -144,8 +144,9 @@ LINEAS = [
     # --- Días a evaluar ---
 
     {"mostrar": True,  "fecha": "2026-08-14", "color": COLORES["azul_corporativo"], "estilo": "dash", "nombre": "Viernes 14"},
-    {"mostrar": True,  "fecha": "2026-08-18", "color": COLORES["morado_oscuro"], "estilo": "solid",  "nombre": "Martes 18"},
-    
+    {"mostrar": True,  "fecha": "2026-08-18", "color": COLORES["lila"], "estilo": "dash",  "nombre": "Martes 18"},
+    {"mostrar": True,  "fecha": "2026-08-19", "color": COLORES["morado_oscuro"], "estilo": "solid",  "nombre": "Miercoles 19"},
+
     {"mostrar": False,  "fecha": "2026-08-15", "color": COLORES["verde_menta"], "estilo": "dash", "nombre": "Sábado 15"},
     {"mostrar": False,  "fecha": "2026-08-16", "color": COLORES["violeta"], "estilo": "dash", "nombre": "Domingo 16"},
     {"mostrar": False,  "fecha": "2026-08-09", "color": COLORES["azul_cielo_claro"], "estilo": "solid", "nombre": "Domingo 09"},
