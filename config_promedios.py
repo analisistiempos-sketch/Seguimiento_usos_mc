@@ -143,8 +143,8 @@ LINEAS = [
     {"mostrar": False, "desde": "2026-08-10", "hasta": "2026-08-14", "color": "#17BECF", "estilo": "dash",  "nombre": "Promedio 10-14 ago"},
     # --- Días a evaluar ---
 
-    {"mostrar": True,  "fecha": "2026-08-14", "color": COLORES["lila"], "estilo": "dash", "nombre": "Viernes 14"},
-    {"mostrar": True,  "fecha": "2026-08-18", "color": COLORES["azul_corporativo"], "estilo": "dash",  "nombre": "Martes 18"},
+    {"mostrar": True,  "fecha": "2026-08-14", "color": COLORES["azul_corporativo"], "estilo": "dash", "nombre": "Viernes 14"},
+    {"mostrar": True,  "fecha": "2026-08-18", "color": COLORES["lila"], "estilo": "dash",  "nombre": "Martes 18"},
     {"mostrar": True,  "fecha": "2026-08-19", "color": COLORES["morado_oscuro"], "estilo": "solid",  "nombre": "Miercoles 19"},
 
     {"mostrar": False,  "fecha": "2026-08-15", "color": COLORES["verde_menta"], "estilo": "dash", "nombre": "Sábado 15"},
