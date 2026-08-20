@@ -145,7 +145,9 @@ LINEAS = [
 
     {"mostrar": True,  "fecha": "2026-08-14", "color": COLORES["azul_corporativo"], "estilo": "dash", "nombre": "Viernes 14"},
     {"mostrar": True,  "fecha": "2026-08-18", "color": COLORES["lila"], "estilo": "dash",  "nombre": "Martes 18"},
-    {"mostrar": True,  "fecha": "2026-08-19", "color": COLORES["morado_oscuro"], "estilo": "solid",  "nombre": "Miercoles 19"},
+    {"mostrar": True,  "fecha": "2026-08-19", "color": COLORES["lavanda"], "estilo": "dash",  "nombre": "Miercoles 19"},
+
+    {"mostrar": True,  "fecha": "2026-08-20", "color": COLORES["morado_oscuro"], "estilo": "solid",  "nombre": "Jueves 20"},
 
     {"mostrar": False,  "fecha": "2026-08-15", "color": COLORES["verde_menta"], "estilo": "dash", "nombre": "Sábado 15"},
     {"mostrar": False,  "fecha": "2026-08-16", "color": COLORES["violeta"], "estilo": "dash", "nombre": "Domingo 16"},
