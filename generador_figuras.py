@@ -11,8 +11,7 @@ import kpi
 COLOR_TIPOS_DIA = {
     "Habíl": "#1F77B4",
     "Sábado": "#FF7F0E",
-    "Domingo": "#2CA02C",
-    "Festivo": "#D62728",
+    "Domingo/Festivo": "#2CA02C",
 }
 
 
@@ -21,9 +20,7 @@ def _tipo_dia(fila):
         return "Sábado"
     if fila["Dia.tipo"] == "Hab":
         return "Habíl"
-    if fila.get("Dia.nombre") == "Domingo":
-        return "Domingo"
-    return "Festivo"
+    return "Domingo/Festivo"
 
 
 def _con_corredor(df, dim):

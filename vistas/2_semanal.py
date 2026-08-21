@@ -42,7 +42,7 @@ st.markdown("Comparación de usos por **día tipo** entre la semana previa, la d
 
 semanas = config_promedios.SEMANAS_TERREMOTO
 semana_base = config_promedios.SEMANA_BASE
-TIPOS = ("Habíl", "Sábado", "Domingo")
+TIPOS = ("Habíl", "Sábado", "Domingo/Festivo")
 
 
 def _con_dia_tipo(df, cal):
