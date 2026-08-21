@@ -185,7 +185,7 @@ with c3:
     st.dataframe(pd.DataFrame(tabla_var), hide_index=True, width="stretch")
 
 # ---------------- comportamiento por hora (promedio) ----------------
-st.subheader("4. Comportamiento por hora (promedio)")
+st.subheader("2. Comportamiento por hora (promedio)")
 df_hora = df.copy()
 df_hora["Semana"] = df_hora["fecha"].map(_semana_de)
 df_hora = df_hora[df_hora["Semana"] != "Fuera"]
@@ -244,8 +244,15 @@ def _seccion_afectacion(datos, grupo_col, titulo):
             labels={"Variación": "Variación del promedio vs base", "Nombre": "", "color": ""},
         )
         fig.update_layout(
-            height=max(500, len(chart) * 16),
+            height=max(600, len(chart) * 24 + 80),
+            margin=dict(t=40, b=60, l=10, r=10),
             yaxis=dict(categoryorder="array", categoryarray=chart["Nombre"]),
+        )
+        fig.update_yaxes(
+            tickmode="array",
+            tickvals=chart["Nombre"].tolist(),
+            ticktext=chart["Nombre"].tolist(),
+            tickfont=dict(size=9),
         )
         fig.update_traces(textposition="outside")
         st.plotly_chart(fig, width="stretch")
