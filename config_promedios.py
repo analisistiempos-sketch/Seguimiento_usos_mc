@@ -91,15 +91,17 @@ ZONAS_EXCLUIDAS = ['Prueba']
 
 SEMANAS_TERREMOTO = {'1_Sem_Pre_Terremoto': {'desde': '2026-08-03', 'hasta': '2026-08-09'}, '2_Sem_Terremoto': {'desde': '2026-08-10', 'hasta': '2026-08-16'}, '3_Sem_Pos_Terremoto': {'desde': '2026-08-17', 'hasta': '2026-08-23'}}
 SEMANA_BASE = '1_Sem_Pre_Terremoto'
+
+'''
 # Habil
+
 LINEAS = [
     {'mostrar': True, 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
     {'mostrar': True, 'desde': '2026-08-10', 'hasta': '2026-08-16', 'color': '#919191', 'estilo': 'dash', 'nombre': 'Promedio 10-16 ago'},
     {'mostrar': True, 'desde': '2026-08-17', 'hasta': '2026-08-23', 'color': '#2f35b5', 'estilo': 'dot', 'nombre': 'Promedio 17-23 ago'}, 
-    {'mostrar': True, 'fecha': '2026-08-19', 'color': '#b95bd8', 'estilo': 'dash', 'nombre': '19_agosto'},
-    {'mostrar': True, 'fecha': '2026-08-20', 'color': '#dc3579', 'estilo': 'dash', 'nombre': '20_agosto'}, 
-    {'mostrar': True, 'fecha': '2026-08-21', 'color': '#7d38c3', 'estilo': 'solid', 'nombre': '21_agosto'},
-      
+    {'mostrar': True, 'fecha': '2026-08-21', 'color': '#b95bd8', 'estilo': 'solid', 'nombre': '21_agosto'},
+    {'mostrar': True, 'fecha': '2026-08-24', 'color': '#7d38c3', 'estilo': 'dash', 'nombre': '24_agosto'},
+    {'mostrar': False, 'fecha': '2026-08-25', 'color': '#dc3579', 'estilo': 'dash', 'nombre': '25_agosto'},   
     ]
 
 '''
@@ -118,7 +120,7 @@ LINEAS = [
     {'mostrar': True, 'fecha': '2026-08-22', 'color': '#9467BD', 'estilo': 'solid', 'nombre': '22_agosto'}
     
     ] 
-
+'''
 # Domingo
 LINEAS = [
     {'mostrar': False , 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
