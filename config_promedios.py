@@ -104,7 +104,7 @@ LINEAS = [
     {'mostrar': False, 'fecha': '2026-08-25', 'color': '#dc3579', 'estilo': 'dash', 'nombre': '25_agosto'},   
     ]
 
-'''
+
 # Sabado
 LINEAS = [
     {'mostrar': False , 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
@@ -136,4 +136,3 @@ LINEAS = [
     {'mostrar': True, 'fecha': '2026-08-23', 'color': '#9467BD', 'estilo': 'solid', 'nombre': '23_agosto'}
     
 ]
-'''
