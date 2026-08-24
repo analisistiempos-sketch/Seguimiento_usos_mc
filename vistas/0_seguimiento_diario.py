@@ -162,6 +162,9 @@ def _figura_lineas(df, lineas):
             es_hoy = False
         if es_hoy:
             max_hora = max(serie.keys()) if not serie.empty else -1
+            corte = getattr(config_promedios, "HORA_CORTE_HOY", None)
+            if corte is not None:
+                max_hora = min(max_hora, int(corte))
             y_vals = [serie.get(h, 0) if h <= max_hora else None for h in horas]
         else:
             y_vals = [serie.get(h, 0) for h in horas]
@@ -242,6 +245,7 @@ def _configurador_lineas():
                 f"TITULO_BARRAS = {cfg.TITULO_BARRAS!r}\n"
                 f"ULTIMOS_DIAS_BARRAS = {cfg.ULTIMOS_DIAS_BARRAS!r}\n"
                 f"INCLUIR_HISTORICO = {cfg.INCLUIR_HISTORICO!r}\n"
+                f"HORA_CORTE_HOY = {cfg.HORA_CORTE_HOY!r}\n"
                 f"CORREDORES_EXCLUIDOS = {cfg.CORREDORES_EXCLUIDOS!r}\n"
                 f"ZONAS_EXCLUIDAS = {cfg.ZONAS_EXCLUIDAS!r}\n\n"
                 f"SEMANAS_TERREMOTO = {cfg.SEMANAS_TERREMOTO!r}\n"
