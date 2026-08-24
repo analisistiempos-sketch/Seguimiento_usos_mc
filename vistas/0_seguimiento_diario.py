@@ -163,7 +163,11 @@ def _figura_lineas(df, lineas):
         if es_hoy:
             max_hora = max(serie.keys()) if not serie.empty else -1
             corte = getattr(config_promedios, "HORA_CORTE_HOY", None)
-            if corte is not None:
+            if isinstance(corte, str) and ":" in str(corte):
+                hora_c, minu_c = str(corte).split(":")
+                corte_h = int(hora_c) if int(minu_c) > 0 else max(0, int(hora_c) - 1)
+                max_hora = min(max_hora, corte_h)
+            elif corte is not None:
                 max_hora = min(max_hora, int(corte))
             y_vals = [serie.get(h, 0) if h <= max_hora else None for h in horas]
         else:
