@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 
 import config_promedios
@@ -87,18 +88,12 @@ def _pct(v):
     return f"{v:+.1%}" if v is not None else "—"
 
 
-MESES_ES = ["", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-
-
 def _label_base():
-    d = pd.Timestamp(semanas[semana_base]["desde"])
-    h = pd.Timestamp(semanas[semana_base]["hasta"])
-    return f"{d.day} al {h.day:02d} {MESES_ES[h.month].capitalize()}"
+    return semana_base
 
 
 def _label_post():
-    h = pd.Timestamp(semanas[semana_base]["hasta"])
-    return f"Promedio después del {h.day:02d} {MESES_ES[h.month]}"
+    return "Promedio después del terremoto"
 
 
 # ---------------- carga ----------------
@@ -148,9 +143,16 @@ if filtro_est:
     df = df[df["Nombre_estacion"].isin(filtro_est)]
 
 # ---------------- tablas por día tipo ----------------
+totales_semana = df.copy()
+totales_semana["Semana"] = totales_semana["fecha"].map(_semana_de)
+totales_semana = totales_semana[totales_semana["Semana"] != "Fuera"]
+semanas_con_datos = set(totales_semana.groupby("Semana")["Uso_pago"].sum().loc[lambda s: s > 0].index)
+
 tabla_total, tabla_prom, tabla_var = [], [], []
 prom_base = {}
-for nombre, s in semanas.items():
+semanas_visibles = [n for n in semanas.keys() if n in semanas_con_datos]
+for nombre in semanas_visibles:
+    s = semanas[nombre]
     sub = df[(df["fecha"] >= pd.Timestamp(s["desde"])) & (df["fecha"] <= pd.Timestamp(s["hasta"]))]
     diario = sub.groupby("fecha")["Uso_pago"].sum()
     tipo_de_dia = sub.groupby("fecha")["Tipo_dia"].first()
@@ -158,34 +160,57 @@ for nombre, s in semanas.items():
     fila_prom = {"Semana": nombre}
     for tipo in TIPOS:
         idx = tipo_de_dia[tipo_de_dia == tipo].index
-        total_tipo = int(diario.reindex(idx).sum())
-        prom_tipo = round(diario.reindex(idx).mean(), 0) if len(idx) else 0
-        fila_total[f"Total {tipo}"] = total_tipo
-        fila_prom[f"Prom {tipo}"] = prom_tipo
+        fila_total[f"Total {tipo}"] = int(diario.reindex(idx).sum())
+        fila_prom[f"Prom {tipo}"] = int(round(diario.reindex(idx).mean())) if len(idx) else 0
     tabla_total.append(fila_total)
     tabla_prom.append(fila_prom)
     if nombre == semana_base:
         prom_base = {t: fila_prom[f"Prom {t}"] for t in TIPOS}
 
-for nombre, fila in zip(semanas, tabla_prom):
+for nombre, fila in zip(semanas_visibles, tabla_prom):
     fila_var = {"Semana": nombre}
     for tipo in TIPOS:
-        fila_var[f"Var {tipo}"] = _pct(_var(fila[f"Prom {tipo}"], prom_base.get(tipo)))
+        if not prom_base.get(tipo):
+            fila_var[f"Var {tipo}"] = "N/D"
+        else:
+            fila_var[f"Var {tipo}"] = _pct((fila[f"Prom {tipo}"] - prom_base[tipo]) / prom_base[tipo])
     tabla_var.append(fila_var)
+
+
+def _estilo_num(df_):
+    s = df_.style
+    cols_num = [c for c in df_.columns[1:] if pd.api.types.is_numeric_dtype(df_[c])]
+    s = s.set_properties(subset=df_.columns[1:].tolist(), **{"text-align": "right"})
+    s = s.set_properties(subset=[df_.columns[0]], **{"text-align": "left"})
+    if cols_num:
+        s = s.format({c: "{:,.0f}" for c in cols_num})
+    return s
+
+
+def _estilo_var(df_):
+    s = _estilo_num(df_)
+    cols_var = [c for c in df_.columns if c.startswith("Var ")]
+    if cols_var:
+        s = s.apply(
+            lambda row: [("color: #D62728; font-weight: bold" if isinstance(v, str) and v.startswith("-") else "") for v in row],
+            subset=cols_var, axis=1,
+        )
+    return s
+
 
 c1, c2, c3 = st.columns(3)
 with c1:
     st.subheader("1. Total de usos por día tipo")
-    st.dataframe(pd.DataFrame(tabla_total), hide_index=True, width="stretch")
+    st.dataframe(_estilo_num(pd.DataFrame(tabla_total)), hide_index=True, width="stretch")
 with c2:
     st.subheader("2. Promedio de usos por día tipo")
-    st.dataframe(pd.DataFrame(tabla_prom), hide_index=True, width="stretch")
+    st.dataframe(_estilo_num(pd.DataFrame(tabla_prom)), hide_index=True, width="stretch")
 with c3:
     st.subheader("3. Variación del promedio vs pre-terremoto")
-    st.dataframe(pd.DataFrame(tabla_var), hide_index=True, width="stretch")
+    st.dataframe(_estilo_var(pd.DataFrame(tabla_var)), hide_index=True, width="stretch")
 
 # ---------------- comportamiento por hora (promedio) ----------------
-st.subheader("2. Comportamiento por hora (promedio)")
+st.subheader("4. Comportamiento por hora (promedio)")
 df_hora = df.copy()
 df_hora["Semana"] = df_hora["fecha"].map(_semana_de)
 df_hora = df_hora[df_hora["Semana"] != "Fuera"]
@@ -193,69 +218,168 @@ por_hora = df_hora.groupby(["Semana", "hora"])["Uso_pago"].sum().reset_index()
 n_dias = df_hora.groupby("Semana")["fecha"].nunique().rename("n_dias")
 por_hora = por_hora.merge(n_dias, on="Semana")
 por_hora["Promedio"] = por_hora["Uso_pago"] / por_hora["n_dias"]
+
+# rejilla completa solo para semanas con datos, horas 4-23
+horas_linea = list(range(4, 24))
+grid = pd.DataFrame(
+    [(s, h) for s in semanas.keys() if s in semanas_con_datos for h in horas_linea],
+    columns=["Semana", "hora"],
+)
+por_hora = por_hora.merge(grid, on=["Semana", "hora"], how="right")
+por_hora["Promedio"] = por_hora["Promedio"].fillna(0)
+por_hora = por_hora.sort_values("hora")
+
+color_map = {nombre: s["color"] for nombre, s in semanas.items()}
 fig_hora = px.line(
     por_hora, x="hora", y="Promedio", color="Semana",
+    color_discrete_map=color_map,
+    category_orders={"Semana": list(semanas.keys())},
     labels={"hora": "Hora", "Promedio": "Promedio de usos", "Semana": ""},
 )
-fig_hora.update_layout(height=450, xaxis=dict(dtick=1), legend_title_text=None)
+fig_hora.update_layout(height=450, xaxis=dict(dtick=1, range=[4, 23]), legend_title_text=None)
 st.plotly_chart(fig_hora, width="stretch")
 st.caption("Promedio de usos por hora = total de esa hora en la semana ÷ días de esa semana con datos.")
 
 
 # ---------------- sección de afectación ----------------
+def _proyectar(datos, grupo_col, entidad):
+    sub = datos[datos[grupo_col].astype(str).str.replace("_", " ").str.strip() == entidad.strip()]
+    if sub.empty:
+        sub = datos[datos[grupo_col] == entidad]
+    sub = sub.copy()
+    if sub.empty or len(sub) < 10:
+        st.info("Datos insuficientes para proyectar esta entidad.")
+        return
+    sub = sub.groupby(["fecha", "Tipo_dia"], as_index=False)["Uso_pago"].sum()
+    sub["dia_semana"] = sub["fecha"].dt.weekday
+    sub["dias_desde_evento"] = (sub["fecha"] - pd.Timestamp("2026-08-10")).dt.days
+
+    X = pd.get_dummies(sub[["dia_semana", "Tipo_dia", "dias_desde_evento"]], columns=["Tipo_dia"], drop_first=True)
+    y = sub["Uso_pago"].astype(float)
+
+    from sklearn.ensemble import RandomForestRegressor
+
+    modelo = RandomForestRegressor(n_estimators=200, max_depth=4, random_state=42)
+    modelo.fit(X, y)
+
+    ult = sub["fecha"].max()
+    fechas_pred = [ult + pd.Timedelta(days=i) for i in range(1, 8)]
+    cal = data_loader.cargar_calendario()
+    tipos_pred = []
+    for f in fechas_pred:
+        t = "Habíl"
+        if cal is not None and not cal.empty:
+            fila = cal[cal["fecha"] == f]
+            if not fila.empty:
+                t = generador_figuras._tipo_dia({"Dia.tipo": fila["Dia.tipo"].iloc[0], "Dia.nombre": fila["Dia.nombre"].iloc[0]})
+        tipos_pred.append(t)
+    X_pred = pd.DataFrame({
+        "dia_semana": [f.weekday() for f in fechas_pred],
+        "dias_desde_evento": [(f - pd.Timestamp("2026-08-10")).days for f in fechas_pred],
+        "Tipo_dia": tipos_pred,
+    })
+    X_pred = pd.get_dummies(X_pred, columns=["Tipo_dia"], drop_first=True)
+    X_pred = X_pred.reindex(columns=X.columns, fill_value=0)
+    y_pred = modelo.predict(X_pred)
+
+    hist = sub.groupby("fecha")["Uso_pago"].sum().reset_index()
+    pre_val = float(hist[hist["fecha"] <= pd.Timestamp("2026-08-09")]["Uso_pago"].mean())
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=hist["fecha"], y=hist["Uso_pago"], name="Histórico",
+                             line=dict(color="#1F77B4")))
+    fig.add_trace(go.Scatter(x=fechas_pred, y=y_pred, name="Proyección 7 días",
+                             line=dict(color="#D62728", dash="dot")))
+    fig.add_hline(y=pre_val, line_dash="dash", line_color="#7F7F7F",
+                  annotation_text=f"Pre-sismo ({pre_val:,.0f})")
+    fig.update_layout(title=f"Proyección de usos — {entidad}", height=420,
+                      xaxis_title="Fecha", yaxis_title="Usos", legend_title_text=None)
+    st.plotly_chart(fig, width="stretch")
+
+
 def _seccion_afectacion(datos, grupo_col, titulo):
     st.subheader(titulo)
     if datos.empty:
         st.info("Sin datos para esta selección.")
         return
-    por = datos.groupby([grupo_col, "fecha"])["Uso_pago"].sum().reset_index()
-    por["Semana"] = por["fecha"].map(_semana_de)
-    por = por[por["Semana"] != "Fuera"]
-    if por.empty:
-        st.info("Sin datos.")
-        return
-    pivot = por.pivot_table(index=grupo_col, columns="Semana", values="Uso_pago", aggfunc="sum", fill_value=0)
-    pivot = pivot[[c for c in semanas.keys() if c in pivot.columns]]
-    if semana_base not in pivot.columns:
-        st.info("No hay datos de la semana base.")
-        return
-    post = [c for c in pivot.columns if c != semana_base]
-    pivot = pivot.reset_index().rename(columns={grupo_col: "Nombre"})
-    pivot["Nombre"] = pivot["Nombre"].astype(str).str.replace("_", " ")
-    base = pivot[semana_base].astype(float)
-    pivot["Promedio post"] = pivot[post].astype(float).mean(axis=1) if post else 0.0
-    base_safe = base.where(base > 0)
-    pivot["Variación"] = ((pivot["Promedio post"] - base) / base_safe).astype(float)
-    pivot["Variación %"] = pivot["Variación"].map(_pct)
-    pivot = pivot.sort_values("Variación", ascending=True)
 
-    pivot = pivot.rename(columns={semana_base: _label_base(), "Promedio post": _label_post(), "Variación %": "Variación Promedio"})
-    resumen = pivot[["Nombre", _label_base(), _label_post(), "Variación Promedio"]]
-    st.dataframe(resumen, hide_index=True, width="stretch")
+    # 1) Totales DIARIOS por entidad (antes de cualquier promedio)
+    diario = datos.groupby([grupo_col, "fecha"])["Uso_pago"].sum().reset_index()
+    diario = diario.rename(columns={grupo_col: "Nombre", "Uso_pago": "Total"})
+    diario["Nombre"] = diario["Nombre"].astype(str).str.replace("_", " ")
+    tipo_por_dia = datos.groupby("fecha")["Tipo_dia"].first()
+    diario["Tipo_dia"] = diario["fecha"].map(tipo_por_dia)
 
-    chart = pivot.dropna(subset=["Variación"])
-    if not chart.empty:
-        chart = chart.copy()
-        fig = px.bar(
-            chart, x="Variación", y="Nombre", orientation="h", text="Variación Promedio",
-            color=(chart["Variación"] < 0).map({True: "Caída", False: "Subida"}),
-            color_discrete_map={"Caída": "#D62728", "Subida": "#2CA02C"},
-            title=f"{titulo} — todas",
-            labels={"Variación": "Variación del promedio vs base", "Nombre": "", "color": ""},
+    # Pre-sismo: promedio de los totales diarios en la semana base (3 - 9 ago)
+    base_s = semanas[semana_base]
+    base_dias = diario[(diario["fecha"] >= pd.Timestamp(base_s["desde"])) & (diario["fecha"] <= pd.Timestamp(base_s["hasta"]))]
+    pre = base_dias.groupby("Nombre")["Total"].mean().round(0).astype(int)
+
+    # Último día HÁBIL: solo fechas con tipo de día "Habíl", luego la máxima
+    habiles = diario[diario["Tipo_dia"] == "Habíl"]
+    if habiles.empty:
+        habiles = diario
+    ult_fecha = habiles["fecha"].max()
+    ult = diario[diario["fecha"] == ult_fecha].set_index("Nombre")["Total"].astype(int)
+
+    tabla = pd.DataFrame({"Nombre": pre.index})
+    tabla["Pre-sismo"] = pre.values
+    tabla["Último día hábil"] = ult.reindex(pre.index).fillna(0).values
+    base_safe = pre.where(pre > 0)
+    tabla["Variación %"] = (((tabla["Último día hábil"] - tabla["Pre-sismo"]) / base_safe.values) * 100).values
+    tabla = tabla.sort_values("Variación %", ascending=True, na_position="last")
+
+    # Aplicamos el estilo de barras de Pandas para el Impacto Visual en la Tabla
+    estilo_tabla = tabla.style.bar(
+        subset=["Variación %"],
+        align="mid",
+        color=["#D62728", "#2CA02C"],
+        vmin=-100,
+        vmax=100
+    )
+
+    fecha_str = ult_fecha.strftime('%d/%m/%Y')
+    st.caption(f"💡 La **Variación %** compara el volumen de usos del **último día hábil registrado ({fecha_str})** contra el promedio diario de la semana **Pre-sismo**.")
+
+    st.dataframe(
+        estilo_tabla,
+        column_config={
+            "Nombre": st.column_config.TextColumn("Entidad"),
+            "Pre-sismo": st.column_config.NumberColumn("Pre-sismo", format="%d"),
+            "Último día hábil": st.column_config.NumberColumn(f"Último hábil ({fecha_str})", format="%d"),
+            "Variación %": st.column_config.NumberColumn("Variación %", format="%+.1f %%"),
+        },
+        hide_index=True,
+        width="stretch",
+    )
+
+    # Sistema de Pestañas para Gráficos
+    tab1, tab2 = st.tabs(["📊 Gráfico General (Todas)", "📈 Proyección por Entidad"])
+
+    with tab1:
+        # Recuperamos el gráfico de barras gigante
+        df_bar = tabla.dropna(subset=["Variación %"]).copy()
+        df_bar["Variación %"] = df_bar["Variación %"].round(1)
+        df_bar["Color"] = df_bar["Variación %"].apply(lambda x: "Subida" if x > 0 else "Caída")
+        fig_bar = px.bar(
+            df_bar, x="Variación %", y="Nombre", color="Color",
+            color_discrete_map={"Subida": "#2CA02C", "Caída": "#D62728"},
+            orientation="h", text="Variación %"
         )
-        fig.update_layout(
-            height=max(600, len(chart) * 24 + 80),
-            margin=dict(t=40, b=60, l=10, r=10),
-            yaxis=dict(categoryorder="array", categoryarray=chart["Nombre"]),
+        fig_bar.update_traces(texttemplate='%{text:+.1f}%', textposition='outside')
+        fig_bar.update_layout(
+            yaxis={'categoryorder': 'total ascending'}, 
+            height=max(400, len(df_bar) * 25), # Ajuste automático de altura según cantidad
+            showlegend=False, 
+            xaxis_title="Variación %", 
+            yaxis_title=""
         )
-        fig.update_yaxes(
-            tickmode="array",
-            tickvals=chart["Nombre"].tolist(),
-            ticktext=chart["Nombre"].tolist(),
-            tickfont=dict(size=9),
-        )
-        fig.update_traces(textposition="outside")
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+    with tab2:
+        entidades = tabla["Nombre"].tolist()
+        entidad = st.selectbox("Entidad para proyectar", entidades, key=f"proy_{grupo_col}")
+        _proyectar(datos, grupo_col, entidad)
 
 
 # ---------------- afectación (con selector) ----------------

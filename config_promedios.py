@@ -89,8 +89,8 @@ INCLUIR_HISTORICO = False
 CORREDORES_EXCLUIDOS = ['Aerosuspendido', 'Sin Identificar']
 ZONAS_EXCLUIDAS = ['Prueba']
 
-SEMANAS_TERREMOTO = {'1_Sem_Pre_Terremoto': {'desde': '2026-08-03', 'hasta': '2026-08-09'}, '2_Sem_Terremoto': {'desde': '2026-08-10', 'hasta': '2026-08-16'}, '3_Sem_Pos_Terremoto': {'desde': '2026-08-17', 'hasta': '2026-08-23'}}
-SEMANA_BASE = '1_Sem_Pre_Terremoto'
+SEMANAS_TERREMOTO = {'3 - 9 ago': {'desde': '2026-08-03', 'hasta': '2026-08-09', 'color': '#2CA02C'}, '10 - 16 ago': {'desde': '2026-08-10', 'hasta': '2026-08-16', 'color': '#D62728'}, '17 - 23 ago': {'desde': '2026-08-17', 'hasta': '2026-08-23', 'color': '#FF7F0E'}, '24 - 30 ago': {'desde': '2026-08-24', 'hasta': '2026-08-30', 'color': '#FFB347'}}
+SEMANA_BASE = '3 - 9 ago'
 
 
 # Habil
