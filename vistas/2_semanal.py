@@ -366,7 +366,7 @@ def _seccion_afectacion(datos, grupo_col, titulo):
     )
 
     # Sistema de Pestañas para Gráficos
-    tab1, tab2 = st.tabs(["📊 Gráfico General (Todas)", "📈 Proyección por Entidad"])
+    tab1, tab2, tab3 = st.tabs(["📊 Gráfico General (Todas)", "📈 Proyección por Entidad", "📉 Usos a Recuperar"])
 
     with tab1:
         # Recuperamos el gráfico de barras gigante
@@ -393,6 +393,25 @@ def _seccion_afectacion(datos, grupo_col, titulo):
         entidad = st.selectbox("Entidad para proyectar", entidades, key=f"proy_{grupo_col}")
         _proyectar(datos, grupo_col, entidad)
 
+    with tab3:
+        st.subheader("Usos a recuperar (usuarios perdidos vs Pre-sismo)")
+        rec = tabla[["Nombre", "Pre-sismo", "Último día hábil"]].copy()
+        rec["Usos a recuperar"] = (rec["Pre-sismo"] - rec["Último día hábil"]).clip(lower=0).astype(int)
+        rec = rec[rec["Usos a recuperar"] > 0].sort_values("Usos a recuperar", ascending=False)
+        st.dataframe(
+            rec,
+            column_config={
+                "Nombre": st.column_config.TextColumn("Entidad"),
+                "Pre-sismo": st.column_config.TextColumn("Pre-sismo"),
+                "Último día hábil": st.column_config.TextColumn("Último día hábil"),
+                "Usos a recuperar": st.column_config.TextColumn("Usos a recuperar"),
+            },
+            hide_index=True,
+            width="stretch",
+            height=600,
+        )
+        st.caption("Usos a recuperar = Pre-sismo − Último día hábil (solo entidades con pérdida).")
+
 
 # ---------------- afectación (con selector) ----------------
 st.subheader("Afectación")
@@ -402,7 +421,7 @@ if grupo == "Estaciones":
     _seccion_afectacion(df[df["tipo_servicio_agrupado"] == "Estacion"], "Nombre_estacion", "🏢 Afectación estaciones")
 elif grupo == "Rutas":
     rutas = df[df["tipo_servicio_agrupado"] != "Estacion"]
-    rutas = rutas[rutas["Nombre_estacion"].astype(str).str[0].str.upper().isin(["A", "P", "T", "E"])]
+    rutas = rutas[rutas["Nombre_estacion"].astype(str).str[0].str.upper().isin(["A", "P"])]
     _seccion_afectacion(rutas, "Nombre_estacion", "🚌 Afectación rutas")
 else:
     _seccion_afectacion(df, "corredor_servicio", "🛣️ Afectación corredores")
