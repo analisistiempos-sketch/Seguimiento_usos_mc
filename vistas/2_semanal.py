@@ -1,4 +1,5 @@
 import base64
+import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -161,7 +162,9 @@ for nombre in semanas_visibles:
     for tipo in TIPOS:
         idx = tipo_de_dia[tipo_de_dia == tipo].index
         fila_total[f"Total {tipo}"] = int(diario.reindex(idx).sum())
-        fila_prom[f"Prom {tipo}"] = int(round(diario.reindex(idx).mean())) if len(idx) else 0
+        # Promedio SOLO con días completos (excluye el día actual, incompleto)
+        idx_comp = [d for d in idx if d.date() < datetime.date.today()]
+        fila_prom[f"Prom {tipo}"] = int(round(diario.reindex(idx_comp).mean())) if len(idx_comp) else 0
     tabla_total.append(fila_total)
     tabla_prom.append(fila_prom)
     if nombre == semana_base:
@@ -201,13 +204,13 @@ def _estilo_var(df_):
 c1, c2, c3 = st.columns(3)
 with c1:
     st.subheader("1. Total de usos por día tipo")
-    st.dataframe(_estilo_num(pd.DataFrame(tabla_total)), hide_index=True, width="stretch")
+    st.dataframe(_estilo_num(pd.DataFrame(tabla_total)), hide_index=True, width="stretch", height=200)
 with c2:
     st.subheader("2. Promedio de usos por día tipo")
-    st.dataframe(_estilo_num(pd.DataFrame(tabla_prom)), hide_index=True, width="stretch")
+    st.dataframe(_estilo_num(pd.DataFrame(tabla_prom)), hide_index=True, width="stretch", height=200)
 with c3:
-    st.subheader("3. Variación del promedio vs pre-terremoto")
-    st.dataframe(_estilo_var(pd.DataFrame(tabla_var)), hide_index=True, width="stretch")
+    st.subheader("3. Variación vs pre")
+    st.dataframe(_estilo_var(pd.DataFrame(tabla_var)), hide_index=True, width="stretch", height=200)
 
 # ---------------- comportamiento por hora (promedio) ----------------
 st.subheader("4. Comportamiento por hora (promedio)")
@@ -251,6 +254,7 @@ def _proyectar(datos, grupo_col, entidad):
         st.info("Datos insuficientes para proyectar esta entidad.")
         return
     sub = sub.groupby(["fecha", "Tipo_dia"], as_index=False)["Uso_pago"].sum()
+    sub = sub[sub["fecha"].dt.date < datetime.date.today()]
     sub["dia_semana"] = sub["fecha"].dt.weekday
     sub["dias_desde_evento"] = (sub["fecha"] - pd.Timestamp("2026-08-10")).dt.days
 
@@ -315,8 +319,9 @@ def _seccion_afectacion(datos, grupo_col, titulo):
     base_dias = diario[(diario["fecha"] >= pd.Timestamp(base_s["desde"])) & (diario["fecha"] <= pd.Timestamp(base_s["hasta"]))]
     pre = base_dias.groupby("Nombre")["Total"].mean().round(0).astype(int)
 
-    # Último día HÁBIL: solo fechas con tipo de día "Habíl", luego la máxima
-    habiles = diario[diario["Tipo_dia"] == "Habíl"]
+    # Último día HÁBIL COMPLETO: solo fechas con tipo "Habíl", sin incluir el día actual (incompleto)
+    hoy = datetime.date.today()
+    habiles = diario[(diario["Tipo_dia"] == "Habíl") & (diario["fecha"].dt.date < hoy)]
     if habiles.empty:
         habiles = diario
     ult_fecha = habiles["fecha"].max()

@@ -415,7 +415,9 @@ def _build_descargas(df):
         for t in tipso:
             idx = td[td == t].index
             fila[f"Total {t}"] = int(diario.reindex(idx).sum())
-            fila[f"Prom {t}"] = round(diario.reindex(idx).mean(), 0) if len(idx) else 0
+            # Promedio solo con días completos (excluye el día actual)
+            idx_comp = [d for d in idx if d.date() < datetime.date.today()]
+            fila[f"Prom {t}"] = round(diario.reindex(idx_comp).mean(), 0) if len(idx_comp) else 0
         filas.append(fila)
         if nombre == base:
             prom_base = {t: fila[f"Prom {t}"] for t in tipso}
