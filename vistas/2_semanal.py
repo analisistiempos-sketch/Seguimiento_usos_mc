@@ -201,15 +201,22 @@ def _estilo_var(df_):
     return s
 
 
+def _titulo_tabla(texto):
+    st.markdown(
+        f'<div style="min-height:52px; display:flex; align-items:flex-end; font-weight:bold; font-size:1rem;">{texto}</div>',
+        unsafe_allow_html=True,
+    )
+
+
 c1, c2, c3 = st.columns(3)
 with c1:
-    st.subheader("1. Total de usos por día tipo")
+    _titulo_tabla("1. Total de usos por día tipo")
     st.dataframe(_estilo_num(pd.DataFrame(tabla_total)), hide_index=True, width="stretch", height=200)
 with c2:
-    st.subheader("2. Promedio de usos por día tipo")
+    _titulo_tabla("2. Promedio de usos por día tipo")
     st.dataframe(_estilo_num(pd.DataFrame(tabla_prom)), hide_index=True, width="stretch", height=200)
 with c3:
-    st.subheader("3. Variación vs pre")
+    _titulo_tabla("3. Variación del promedio vs pre-terremoto")
     st.dataframe(_estilo_var(pd.DataFrame(tabla_var)), hide_index=True, width="stretch", height=200)
 
 # ---------------- comportamiento por hora (promedio) ----------------
