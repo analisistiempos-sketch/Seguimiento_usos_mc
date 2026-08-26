@@ -294,7 +294,14 @@ def _proyectar(datos, grupo_col, entidad):
     y_pred = modelo.predict(X_pred)
 
     hist = sub.groupby("fecha")["Uso_pago"].sum().reset_index()
-    pre_val = float(hist[hist["fecha"] <= pd.Timestamp("2026-08-09")]["Uso_pago"].mean())
+    # Pre-sismo de referencia: promedio de días HÁBILES de la semana base (misma lógica que la tabla)
+    base_s_ref = semanas[semana_base]
+    pre_ref = sub[
+        (sub["fecha"] >= pd.Timestamp(base_s_ref["desde"]))
+        & (sub["fecha"] <= pd.Timestamp(base_s_ref["hasta"]))
+        & (sub["Tipo_dia"] == "Habíl")
+    ]
+    pre_val = float(pre_ref["Uso_pago"].mean()) if not pre_ref.empty else 0.0
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=hist["fecha"], y=hist["Uso_pago"], name="Histórico",
@@ -321,9 +328,10 @@ def _seccion_afectacion(datos, grupo_col, titulo):
     tipo_por_dia = datos.groupby("fecha")["Tipo_dia"].first()
     diario["Tipo_dia"] = diario["fecha"].map(tipo_por_dia)
 
-    # Pre-sismo: promedio de los totales diarios en la semana base (3 - 9 ago)
+    # Pre-sismo: promedio de los totales diarios en la semana base (3 - 9 ago) SOLO HÁBILES
     base_s = semanas[semana_base]
     base_dias = diario[(diario["fecha"] >= pd.Timestamp(base_s["desde"])) & (diario["fecha"] <= pd.Timestamp(base_s["hasta"]))]
+    base_dias = base_dias[base_dias["Tipo_dia"] == "Habíl"]
     pre = base_dias.groupby("Nombre")["Total"].mean().round(0).astype(int)
 
     # Último día HÁBIL COMPLETO: solo fechas con tipo "Habíl", sin incluir el día actual (incompleto)
