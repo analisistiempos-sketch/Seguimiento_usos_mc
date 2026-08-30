@@ -95,7 +95,7 @@ ZONAS_EXCLUIDAS = ['Prueba']
 SEMANAS_TERREMOTO = {'3 - 9 ago': {'desde': '2026-08-03', 'hasta': '2026-08-09', 'color': '#2CA02C'}, '10 - 16 ago': {'desde': '2026-08-10', 'hasta': '2026-08-16', 'color': '#D62728'}, '17 - 23 ago': {'desde': '2026-08-17', 'hasta': '2026-08-23', 'color': '#FF7F0E'}, '24 - 30 ago': {'desde': '2026-08-24', 'hasta': '2026-08-30', 'color': '#FFB347'}}
 SEMANA_BASE = '3 - 9 ago'
 
-
+'''
 # Habil
 
 LINEAS = [
@@ -122,10 +122,12 @@ LINEAS = [
     {'mostrar': True, 'fecha': '2026-08-01', 'color': '#000000', 'estilo': 'solid', 'nombre': '01_agosto'},
     {'mostrar': True, 'fecha': '2026-08-08', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '08_agosto'},
     {'mostrar': True, 'fecha': '2026-08-15', 'color': '#FFB6C1', 'estilo': 'dash', 'nombre': '15_agosto'},
-    {'mostrar': True, 'fecha': '2026-08-22', 'color': '#9467BD', 'estilo': 'solid', 'nombre': '22_agosto'}
+    {'mostrar': True, 'fecha': '2026-08-22', 'color': '#FF80AB', 'estilo': 'dash', 'nombre': '22_agosto'}
+
+    {'mostrar': True, 'fecha': '2026-08-29', 'color': '#9467BD', 'estilo': 'solid', 'nombre': '29_agosto'}
     
     ] 
-
+'''
 # Domingo
 LINEAS = [
     {'mostrar': False , 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
