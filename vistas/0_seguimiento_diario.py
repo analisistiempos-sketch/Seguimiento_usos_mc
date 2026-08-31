@@ -432,9 +432,15 @@ def _build_csv_semanal(df):
 
 @st.cache_data(ttl=300, show_spinner="Preparando CSV detallado completo...")
 def _csv_detalle_completo(fecha_min, fecha_max, corredores, zonas, tipos, estaciones):
+    import config_promedios
+    incluir_historico = config_promedios.INCLUIR_HISTORICO
+    excluidos = getattr(config_promedios, "CORREDORES_EXCLUIDOS", [])
+    zonas_excl = getattr(config_promedios, "ZONAS_EXCLUIDAS", [])
+    
     df_descarga = cargar_datos(fecha_min, fecha_max, incluir_historico)
-    df_descarga = _con_corredor(df_descarga, dim)
-    df_descarga = _con_dia_tipo(df_descarga, cal)
+    df_descarga = _con_corredor(df_descarga, cargar_dim())
+    df_descarga = _con_dia_tipo(df_descarga, cargar_cal())
+    
     if excluidos:
         df_descarga = df_descarga[~df_descarga["corredor_servicio"].isin(excluidos)]
     if zonas_excl:
