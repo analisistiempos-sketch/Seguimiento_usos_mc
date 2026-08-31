@@ -388,7 +388,7 @@ with col_linea:
         st.info("Configura LINEAS en config_promedios.py (con mostrar: True).")
 
 # ------------------------------------------------------------------ ENCABEZADO Y PIE
-def _build_descargas(df):
+def _build_csv_detalle(df):
     detalle = df[["fecha", "Nombre_estacion", "Tipo_dia", "corredor_servicio", "zona", "hora", "Uso_pago", "Integracion"]].copy()
     detalle["Fecha"] = detalle["fecha"].dt.strftime("%d/%m/%Y")
     detalle = detalle.rename(columns={
@@ -400,8 +400,10 @@ def _build_descargas(df):
         "Uso_pago": "Usos",
     })
     detalle = detalle[["Fecha", "Estacion_ruta", "Dia tipo", "Corredor", "Zona", "Hora", "Usos", "Integracion"]]
-    csv1 = detalle.to_csv(index=False).encode("utf-8-sig")
+    return detalle.to_csv(index=False).encode("utf-8-sig")
 
+
+def _build_csv_semanal(df):
     semanas = config_promedios.SEMANAS_TERREMOTO
     base = config_promedios.SEMANA_BASE
     tipso = ("Habíl", "Sábado", "Domingo/Festivo")
@@ -425,27 +427,30 @@ def _build_descargas(df):
         for t in tipso:
             b = prom_base.get(t)
             fila[f"Var {t} vs pre"] = round((fila[f"Prom {t}"] - b) / b, 4) if b else None
-    csv2 = pd.DataFrame(filas).to_csv(index=False).encode("utf-8-sig")
-    return csv1, csv2
+    return pd.DataFrame(filas).to_csv(index=False).encode("utf-8-sig")
 
 
-df_descarga = cargar_datos(dias[0] if dias else fecha_min, fecha_max, incluir_historico)
-df_descarga = _con_corredor(df_descarga, dim)
-df_descarga = _con_dia_tipo(df_descarga, cal)
-if excluidos:
-    df_descarga = df_descarga[~df_descarga["corredor_servicio"].isin(excluidos)]
-if zonas_excl:
-    df_descarga = df_descarga[~df_descarga["zona"].isin(zonas_excl)]
-if filtro_corr:
-    df_descarga = df_descarga[df_descarga["corredor_servicio"].isin(filtro_corr)]
-if filtro_zona:
-    df_descarga = df_descarga[df_descarga["zona"].isin(filtro_zona)]
-if filtro_tipo:
-    df_descarga = df_descarga[df_descarga["Tipo_dia"].isin(filtro_tipo)]
-if filtro_est:
-    df_descarga = df_descarga[df_descarga["Nombre_estacion"].isin(filtro_est)]
+@st.cache_data(ttl=300, show_spinner="Preparando CSV detallado completo...")
+def _csv_detalle_completo(fecha_min, fecha_max, corredores, zonas, tipos, estaciones):
+    df_descarga = cargar_datos(fecha_min, fecha_max, incluir_historico)
+    df_descarga = _con_corredor(df_descarga, dim)
+    df_descarga = _con_dia_tipo(df_descarga, cal)
+    if excluidos:
+        df_descarga = df_descarga[~df_descarga["corredor_servicio"].isin(excluidos)]
+    if zonas_excl:
+        df_descarga = df_descarga[~df_descarga["zona"].isin(zonas_excl)]
+    if corredores:
+        df_descarga = df_descarga[df_descarga["corredor_servicio"].isin(corredores)]
+    if zonas:
+        df_descarga = df_descarga[df_descarga["zona"].isin(zonas)]
+    if tipos:
+        df_descarga = df_descarga[df_descarga["Tipo_dia"].isin(tipos)]
+    if estaciones:
+        df_descarga = df_descarga[df_descarga["Nombre_estacion"].isin(estaciones)]
+    return _build_csv_detalle(df_descarga)
 
-csv_detalle, csv_semanal = _build_descargas(df_descarga)
+
+csv_semanal = _build_csv_semanal(df_filtrado)
 
 actualizacion = data_loader.fecha_actualizacion()
 if actualizacion:
@@ -470,13 +475,22 @@ except Exception as e:
     st.caption(f"No se pudo generar la imagen: {e}")
 
 b1, b2 = st.columns(2)
-b1.download_button(
-    "📄 Tabla detallada (CSV)",
-    data=csv_detalle,
-    file_name="usos_detalle.csv",
-    mime="text/csv",
-    key="btn_csv_detalle",
-)
+with b1:
+    if "csv_detalle" not in st.session_state:
+        if st.button("📄 Preparar tabla detallada (CSV)", key="btn_preparar_detalle"):
+            st.session_state["csv_detalle"] = _csv_detalle_completo(
+                dias[0] if dias else fecha_min, fecha_max,
+                tuple(filtro_corr), tuple(filtro_zona), tuple(filtro_tipo), tuple(filtro_est),
+            )
+            st.rerun()
+    if "csv_detalle" in st.session_state:
+        st.download_button(
+            "📄 Tabla detallada (CSV)",
+            data=st.session_state["csv_detalle"],
+            file_name="usos_detalle.csv",
+            mime="text/csv",
+            key="btn_csv_detalle",
+        )
 b2.download_button(
     "📊 Semanal promedios vs pre-terremoto (CSV)",
     data=csv_semanal,
