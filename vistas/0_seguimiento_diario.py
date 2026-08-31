@@ -483,10 +483,17 @@ except Exception as e:
 b1, b2 = st.columns(2)
 with b1:
     if "csv_detalle" not in st.session_state:
-        opcion_rango = st.radio("Rango de datos a exportar:", ["Últimos 21 días", "Todo el histórico disponible (Parquet)"], key="radio_rango_export")
+        opcion_rango = st.radio("Rango de datos a exportar:", ["Últimos 21 días", "Histórico (Máximo 40 días en Nube)"], key="radio_rango_export")
         if st.button("📄 Preparar tabla detallada (CSV)", key="btn_preparar_detalle"):
             import datetime
-            f_min = fecha_min if opcion_rango == "Últimos 21 días" else datetime.date(2000, 1, 1)
+            import config
+            if opcion_rango == "Últimos 21 días":
+                f_min = fecha_min
+            else:
+                if config.FUENTE == "github":
+                    f_min = fecha_max - datetime.timedelta(days=40)
+                else:
+                    f_min = datetime.date(2000, 1, 1)
             st.session_state["csv_detalle"] = _csv_detalle_completo(
                 f_min, fecha_max,
                 tuple(filtro_corr), tuple(filtro_zona), tuple(filtro_tipo), tuple(filtro_est),
