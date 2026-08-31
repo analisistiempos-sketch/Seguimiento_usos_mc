@@ -101,7 +101,7 @@ def _con_dia_tipo(df, cal):
     if cal is not None and not cal.empty:
         mapa = cal[["fecha", "Dia.tipo", "Dia.nombre"]].drop_duplicates(subset=["fecha"])
         df = df.merge(mapa, on="fecha", how="left")
-        df["Tipo_dia"] = df.apply(_tipo_dia, axis=1)
+        df["Tipo_dia"] = df["Dia.tipo"].map({"Sab": "Sábado", "Hab": "Habíl"}).fillna("Domingo/Festivo")
     else:
         df["Tipo_dia"] = "Sin dato"
     return df
