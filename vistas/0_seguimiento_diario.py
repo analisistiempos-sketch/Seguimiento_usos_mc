@@ -389,7 +389,7 @@ with col_linea:
 
 # ------------------------------------------------------------------ ENCABEZADO Y PIE
 def _build_descargas(df):
-    detalle = df[["fecha", "Nombre_estacion", "Tipo_dia", "corredor_servicio", "zona", "hora", "Uso_pago"]].copy()
+    detalle = df[["fecha", "Nombre_estacion", "Tipo_dia", "corredor_servicio", "zona", "hora", "Uso_pago", "Integracion"]].copy()
     detalle["Fecha"] = detalle["fecha"].dt.strftime("%d/%m/%Y")
     detalle = detalle.rename(columns={
         "Nombre_estacion": "Estacion_ruta",
@@ -399,7 +399,7 @@ def _build_descargas(df):
         "hora": "Hora",
         "Uso_pago": "Usos",
     })
-    detalle = detalle[["Fecha", "Estacion_ruta", "Dia tipo", "Corredor", "Zona", "Hora", "Usos"]]
+    detalle = detalle[["Fecha", "Estacion_ruta", "Dia tipo", "Corredor", "Zona", "Hora", "Usos", "Integracion"]]
     csv1 = detalle.to_csv(index=False).encode("utf-8-sig")
 
     semanas = config_promedios.SEMANAS_TERREMOTO
