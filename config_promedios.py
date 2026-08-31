@@ -88,7 +88,7 @@ ULTIMOS_DIAS_BARRAS = 21
 INCLUIR_HISTORICO = False
 # HORA_CORTE_HOY: última hora (incluida) que se muestra para el día de HOY en la línea.
 # Ej. 8 = mostrar hasta las 8:59 · 9 = hasta las 9:59 · None = mostrar todo (hasta la hora con datos).
-HORA_CORTE_HOY = None
+HORA_CORTE_HOY = '07:59'
 CORREDORES_EXCLUIDOS = ['Aerosuspendido', 'Sin Identificar']
 ZONAS_EXCLUIDAS = ['Prueba']
 
