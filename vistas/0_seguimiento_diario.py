@@ -429,7 +429,23 @@ def _build_descargas(df):
     return csv1, csv2
 
 
-csv_detalle, csv_semanal = _build_descargas(df_filtrado)
+df_descarga = cargar_datos(dias[0] if dias else fecha_min, fecha_max, incluir_historico)
+df_descarga = _con_corredor(df_descarga, dim)
+df_descarga = _con_dia_tipo(df_descarga, cal)
+if excluidos:
+    df_descarga = df_descarga[~df_descarga["corredor_servicio"].isin(excluidos)]
+if zonas_excl:
+    df_descarga = df_descarga[~df_descarga["zona"].isin(zonas_excl)]
+if filtro_corr:
+    df_descarga = df_descarga[df_descarga["corredor_servicio"].isin(filtro_corr)]
+if filtro_zona:
+    df_descarga = df_descarga[df_descarga["zona"].isin(filtro_zona)]
+if filtro_tipo:
+    df_descarga = df_descarga[df_descarga["Tipo_dia"].isin(filtro_tipo)]
+if filtro_est:
+    df_descarga = df_descarga[df_descarga["Nombre_estacion"].isin(filtro_est)]
+
+csv_detalle, csv_semanal = _build_descargas(df_descarga)
 
 actualizacion = data_loader.fecha_actualizacion()
 if actualizacion:
