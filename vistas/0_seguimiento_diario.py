@@ -483,15 +483,21 @@ except Exception as e:
 b1, b2 = st.columns(2)
 with b1:
     if "csv_detalle" not in st.session_state:
+        opcion_rango = st.radio("Rango de datos a exportar:", ["Últimos 21 días", "Todo el histórico disponible (Parquet)"], key="radio_rango_export")
         if st.button("📄 Preparar tabla detallada (CSV)", key="btn_preparar_detalle"):
+            import datetime
+            f_min = fecha_min if opcion_rango == "Últimos 21 días" else datetime.date(2000, 1, 1)
             st.session_state["csv_detalle"] = _csv_detalle_completo(
-                dias[0] if dias else fecha_min, fecha_max,
+                f_min, fecha_max,
                 tuple(filtro_corr), tuple(filtro_zona), tuple(filtro_tipo), tuple(filtro_est),
             )
             st.rerun()
     if "csv_detalle" in st.session_state:
+        if st.button("🔄 Cambiar rango / Preparar nuevo CSV"):
+            del st.session_state["csv_detalle"]
+            st.rerun()
         st.download_button(
-            "📄 Tabla detallada (CSV)",
+            "📄 Descargar tabla detallada (CSV)",
             data=st.session_state["csv_detalle"],
             file_name="usos_detalle.csv",
             mime="text/csv",
