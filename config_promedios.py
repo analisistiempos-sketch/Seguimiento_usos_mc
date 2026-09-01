@@ -104,9 +104,9 @@ LINEAS = [
     {'mostrar': True, 'desde': '2026-08-18', 'hasta': '2026-08-21', 'color': '#2f35b5', 'estilo': 'dash', 'nombre': 'Promedio 18-21 ago'}, 
     {'mostrar': True, 'desde': '2026-08-24', 'hasta': '2026-08-28', 'color': '#FF80AB', 'estilo': 'dash', 'nombre': 'Promedio 24-28 ago'}, 
     
-    {'mostrar': True, 'fecha': '2026-08-28', 'color': '#FF80AB', 'estilo': 'dash', 'nombre': '28_agosto'},
-    {'mostrar': False, 'fecha': '2026-08-27', 'color': '#FF80AB', 'estilo': 'dash', 'nombre': '27_agosto'},
-    {'mostrar': True, 'fecha': '2026-08-31', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '31_agosto'},    
+    
+    {'mostrar': True, 'fecha': '2026-08-31', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '31_agosto'},    
+    {'mostrar': True, 'fecha': '2026-09-01', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '01_septiembre'},
     ]
 '''
 # Sabado
