@@ -1,4 +1,4 @@
-﻿# ConfiguraciÃ³n del panel (actualizada desde la app)
+# Configuración del panel (actualizada desde la app)
 COLORES = {
     'azul_marino': '#000080',
     'azul_oscuro': '#00008B',
@@ -83,11 +83,11 @@ COLORES = {
 
 
 TITULO_LINEAS_RESUMEN = 'Usos por Hora'
-TITULO_BARRAS = 'Usos Ãšltimos {n} dÃ­as'
+TITULO_BARRAS = 'Usos Últimos {n} días'
 ULTIMOS_DIAS_BARRAS = 21
 INCLUIR_HISTORICO = False
-# HORA_CORTE_HOY: Ãºltima hora (incluida) que se muestra para el dÃ­a de HOY en la lÃ­nea.
-# Ej. 8 = mostrar hasta las 8:59 Â· 9 = hasta las 9:59 Â· None = mostrar todo (hasta la hora con datos).
+# HORA_CORTE_HOY: última hora (incluida) que se muestra para el día de HOY en la línea.
+# Ej. 8 = mostrar hasta las 8:59 · 9 = hasta las 9:59 · None = mostrar todo (hasta la hora con datos).
 HORA_CORTE_HOY = None
 CORREDORES_EXCLUIDOS = ['Aerosuspendido', 'Sin Identificar']
 ZONAS_EXCLUIDAS = ['Prueba']
