@@ -108,7 +108,7 @@ LINEAS = [
     {'mostrar': True, 'fecha': '2026-09-03', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '03_septiembre'},    
     {'mostrar': True, 'fecha': '2026-09-04', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '04_septiembre'},
     ]
-'''
+
 # Sabado
 LINEAS = [
     {'mostrar': False , 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
@@ -136,11 +136,11 @@ LINEAS = [
     {'mostrar': False, 'fecha': '2026-08-20', 'color': '#dc3579', 'estilo': 'dash', 'nombre': '20_agosto'}, 
     {'mostrar': False, 'fecha': '2026-08-21', 'color': '#7d38c3', 'estilo': 'solid', 'nombre': '21_agosto'},
 
-    {'mostrar': True, 'fecha': '2026-08-02', 'color': '#000000', 'estilo': 'solid', 'nombre': '02_agosto'},
-    {'mostrar': True, 'fecha': '2026-08-09', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '09_agosto'},
-    {'mostrar': True, 'fecha': '2026-08-16', 'color': '#FFB6C1', 'estilo': 'dash', 'nombre': '16_agosto'},
-    {'mostrar': True, 'fecha': '2026-08-23', 'color': '#FF80AB', 'estilo': 'dash', 'nombre': '23_agosto'},
-    {'mostrar': True, 'fecha': '2026-08-30', 'color': '#9467BD', 'estilo': 'solid', 'nombre': '30_agosto'}
+
+    {'mostrar': True, 'fecha': '2026-08-02', 'color': '#FFB6C1', 'estilo': 'solid', 'nombre': '02_agosto'},
+    {'mostrar': True, 'fecha': '2026-08-23', 'color': '#FFB6C1', 'estilo': 'dash', 'nombre': '23_agosto'},
+    {'mostrar': True, 'fecha': '2026-08-30', 'color': '#FFB6C1', 'estilo': 'dash', 'nombre': '30_agosto'},
+    {'mostrar': True, 'fecha': '2026-09-06', 'color': '#9467BD', 'estilo': 'solid', 'nombre': '06_septiembre'},
     
 ]
 '''
