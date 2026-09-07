@@ -102,11 +102,11 @@ LINEAS = [
     {'mostrar': True, 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
     {'mostrar': True, 'desde': '2026-08-10', 'hasta': '2026-08-14', 'color': '#919191', 'estilo': 'dash', 'nombre': 'Promedio 10-14 ago'},
     {'mostrar': True, 'desde': '2026-08-18', 'hasta': '2026-08-21', 'color': '#2f35b5', 'estilo': 'dash', 'nombre': 'Promedio 18-21 ago'}, 
-    {'mostrar': True, 'desde': '2026-08-24', 'hasta': '2026-08-28', 'color': '#FF80AB', 'estilo': 'dash', 'nombre': 'Promedio 24-28 ago'}, 
-    
+    {'mostrar': True, 'desde': '2026-08-24', 'hasta': '2026-08-28', 'color': '#8C564B', 'estilo': 'dash', 'nombre': 'Promedio 24-28 ago'}, 
+    {'mostrar': True, 'desde': '2026-08-31', 'hasta': '2026-09-04', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 31ago-04sep'},
     
    
-    {'mostrar': True, 'fecha': '2026-09-04', 'color': '#E377C2', 'estilo': 'solid', 'nombre': '04_septiembre'},
+    {'mostrar': True, 'fecha': '2026-09-04', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '04_septiembre'},
     {'mostrar': True, 'fecha': '2026-09-07', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '07_septiembre'},
 
     ]
