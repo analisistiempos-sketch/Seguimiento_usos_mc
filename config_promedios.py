@@ -97,7 +97,7 @@ SEMANA_BASE = '3 - 9 ago'
 
 
 # Habil
-'''
+
 LINEAS = [
     {'mostrar': True, 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
     {'mostrar': True, 'desde': '2026-08-10', 'hasta': '2026-08-14', 'color': '#919191', 'estilo': 'dash', 'nombre': 'Promedio 10-14 ago'},
@@ -105,10 +105,12 @@ LINEAS = [
     {'mostrar': True, 'desde': '2026-08-24', 'hasta': '2026-08-28', 'color': '#FF80AB', 'estilo': 'dash', 'nombre': 'Promedio 24-28 ago'}, 
     
     
-    {'mostrar': True, 'fecha': '2026-09-03', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '03_septiembre'},    
-    {'mostrar': True, 'fecha': '2026-09-04', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '04_septiembre'},
-    ]
+   
+    {'mostrar': True, 'fecha': '2026-09-04', 'color': '#E377C2', 'estilo': 'solid', 'nombre': '04_septiembre'},
+    {'mostrar': True, 'fecha': '2026-09-07', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '07_septiembre'},
 
+    ]
+'''
 # Sabado
 LINEAS = [
     {'mostrar': False , 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
@@ -126,7 +128,7 @@ LINEAS = [
     {'mostrar': True, 'fecha': '2026-09-05', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '05_septiembre'}
     
     ] 
-'''
+
 # Domingo
 LINEAS = [
     {'mostrar': False , 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
@@ -143,4 +145,4 @@ LINEAS = [
     {'mostrar': True, 'fecha': '2026-09-06', 'color': '#9467BD', 'estilo': 'solid', 'nombre': '06_septiembre'},
     
 ]
-
+'''
