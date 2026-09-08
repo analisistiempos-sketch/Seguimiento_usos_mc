@@ -106,8 +106,8 @@ LINEAS = [
     {'mostrar': True, 'desde': '2026-08-31', 'hasta': '2026-09-04', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 31ago-04sep'},
     
    
-    {'mostrar': True, 'fecha': '2026-09-04', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '04_septiembre'},
-    {'mostrar': True, 'fecha': '2026-09-07', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '07_septiembre'},
+    {'mostrar': True, 'fecha': '2026-09-07', 'color': '#E377C2', 'estilo': 'dash', 'nombre': '07_septiembre'},
+    {'mostrar': True, 'fecha': '2026-09-08', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '08_septiembre'},
 
     ]
 '''
