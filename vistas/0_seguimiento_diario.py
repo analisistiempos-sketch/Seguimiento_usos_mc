@@ -530,6 +530,11 @@ def _boton_captura_pantalla(nombre_archivo="reporte_seguimiento_usos.png"):
                       || parentDoc.querySelector('.main')
                       || parentDoc.body;
 
+          // Guardar scroll anterior y mover arriba para que no recorte las gráficas
+          const prevScrollY = window.parent.scrollY || parentDoc.documentElement.scrollTop;
+          const prevScrollX = window.parent.scrollX || parentDoc.documentElement.scrollLeft;
+          window.parent.scrollTo(0, 0);
+
           const header = parentDoc.querySelector('header');
           const prevHeader = header ? header.style.visibility : '';
           if (header) header.style.visibility = 'hidden';
@@ -538,16 +543,59 @@ def _boton_captura_pantalla(nombre_archivo="reporte_seguimiento_usos.png"):
           const thisIframe = Array.from(iframes).find(f => f.contentWindow === window);
           if (thisIframe) thisIframe.style.visibility = 'hidden';
 
+          await new Promise(resolve => setTimeout(resolve, 150));
+
           const canvas = await html2canvas(target, {{
             scale: 2,
             useCORS: true,
             allowTaint: true,
             logging: false,
-            backgroundColor: '#ffffff'
+            scrollX: 0,
+            scrollY: 0,
+            backgroundColor: '#ffffff',
+            onclone: function(clonedDoc) {{
+              // 1. Forzar espaciado regular de palabras y letras
+              const style = clonedDoc.createElement('style');
+              style.innerHTML = `
+                * {{
+                  letter-spacing: 0.01em !important;
+                  word-spacing: 0.15em !important;
+                  font-variant-ligatures: none !important;
+                  font-feature-settings: normal !important;
+                }}
+              `;
+              clonedDoc.head.appendChild(style);
+
+              // 2. Reemplazar espacios normales por espacios no separables (\\u00A0)
+              // para evitar que html2canvas elimine los espacios entre palabras
+              const walker = clonedDoc.createTreeWalker(clonedDoc.body, NodeFilter.SHOW_TEXT, null, false);
+              let node;
+              while ((node = walker.nextNode())) {{
+                if (node.nodeValue && node.nodeValue.trim().length > 0) {{
+                  node.nodeValue = node.nodeValue.replace(/ /g, '\\u00A0');
+                }}
+              }}
+
+              // 3. Ocultar sección de descarga de archivos CSV en la imagen
+              const elemCsv = clonedDoc.getElementById('area-descargas-csv');
+              if (elemCsv) {{
+                let parentBlock = elemCsv.closest('[data-testid="stVerticalBlockBorderWrapper"]') 
+                               || elemCsv.parentElement;
+                if (parentBlock) {{
+                  let next = parentBlock.nextElementSibling;
+                  while (next) {{
+                    next.style.display = 'none';
+                    next = next.nextElementSibling;
+                  }}
+                  parentBlock.style.display = 'none';
+                }}
+              }}
+            }}
           }});
 
           if (header) header.style.visibility = prevHeader;
           if (thisIframe) thisIframe.style.visibility = '';
+          window.parent.scrollTo(prevScrollX, prevScrollY);
 
           const link = document.createElement('a');
           link.download = "{nombre_archivo}";
@@ -568,6 +616,7 @@ def _boton_captura_pantalla(nombre_archivo="reporte_seguimiento_usos.png"):
 
 _boton_captura_pantalla("reporte_seguimiento_usos.png")
 
+st.markdown('<div id="area-descargas-csv"></div>', unsafe_allow_html=True)
 b1, b2 = st.columns(2)
 with b1:
     if "csv_detalle" not in st.session_state:
