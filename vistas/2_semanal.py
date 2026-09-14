@@ -239,12 +239,11 @@ st.markdown(
 df_diario = df.groupby("fecha", as_index=False)["Uso_pago"].sum().sort_values("fecha")
 df_diario = _con_dia_tipo(df_diario, cal)
 df_diario["Semana"] = df_diario["fecha"].map(_semana_de)
-if cal is not None and not cal.empty:
-    mapa_nom = cal[["fecha", "Dia.nombre"]].drop_duplicates("fecha")
-    df_diario = df_diario.merge(mapa_nom, on="fecha", how="left")
+if "Dia.nombre" in df_diario.columns:
+    df_diario["dia_nom"] = df_diario["Dia.nombre"].fillna("")
 else:
-    df_diario["Dia.nombre"] = ""
-df_diario["dia_nom"] = df_diario["Dia.nombre"].fillna("")
+    dias_es = {0: "Lunes", 1: "Martes", 2: "Miércoles", 3: "Jueves", 4: "Viernes", 5: "Sábado", 6: "Domingo"}
+    df_diario["dia_nom"] = df_diario["fecha"].dt.weekday.map(dias_es).fillna("")
 df_diario["texto_usos"] = df_diario["Uso_pago"].apply(lambda x: f"{x:,.0f}".replace(",", "."))
 
 fig_tendencia = go.Figure()
