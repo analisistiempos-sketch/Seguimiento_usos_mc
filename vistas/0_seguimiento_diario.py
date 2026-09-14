@@ -10,7 +10,7 @@ import streamlit as st
 import config_promedios
 import data_loader
 import kpi
-import resumen_image
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Seguimiento diario", layout="wide", initial_sidebar_state="expanded")
 
@@ -468,17 +468,105 @@ col_pie1, col_pie2 = st.columns([1, 1])
 col_pie1.caption(f"**{texto_ultimo}**")
 col_pie2.markdown("<div style='text-align: right; color: gray; font-size: 0.85em; font-weight: bold; margin-top: 5px;'>DIRECCIÓN DE OPERACIONES - OFICINA DE EVALUACIÓN</div>", unsafe_allow_html=True)
 
-try:
-    png_bytes = resumen_image.exportar_bytes(fig_linea, fig_bar21, texto_ultimo, "PNG")
-    st.download_button(
-        "Descargar imagen del Resumen",
-        data=png_bytes,
-        file_name="resumen_usos.png",
-        mime="image/png",
-        key="btn_descargar_resumen",
-    )
-except Exception as e:
-    st.caption(f"No se pudo generar la imagen: {e}")
+def _boton_captura_pantalla(nombre_archivo="reporte_seguimiento_usos.png"):
+    html_code = f"""
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+      .btn-captura {{
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #1E88E5 0%, #1565C0 100%);
+        color: white;
+        border: none;
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        transition: all 0.2s ease;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }}
+      .btn-captura:hover {{
+        background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+        transform: translateY(-1px);
+      }}
+      .btn-captura:disabled {{
+        background: #9E9E9E;
+        cursor: not-allowed;
+        transform: none;
+      }}
+      #estado_captura {{
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 13px;
+        color: #555;
+        margin-left: 12px;
+        vertical-align: middle;
+      }}
+    </style>
+    <div style="padding: 4px 0;">
+      <button id="btnCaptura" class="btn-captura">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+        Descargar imagen de la pantalla
+      </button>
+      <span id="estado_captura"></span>
+    </div>
+    <script>
+      document.getElementById('btnCaptura').addEventListener('click', async function() {{
+        const btn = this;
+        const estado = document.getElementById('estado_captura');
+        btn.disabled = true;
+        estado.innerText = "⏳ Generando captura...";
+
+        try {{
+          const parentDoc = window.parent.document;
+          const target = parentDoc.querySelector('[data-testid="stMainBlockContainer"]')
+                      || parentDoc.querySelector('.main .block-container')
+                      || parentDoc.querySelector('.main')
+                      || parentDoc.body;
+
+          const header = parentDoc.querySelector('header');
+          const prevHeader = header ? header.style.visibility : '';
+          if (header) header.style.visibility = 'hidden';
+
+          const iframes = parentDoc.querySelectorAll('iframe');
+          const thisIframe = Array.from(iframes).find(f => f.contentWindow === window);
+          if (thisIframe) thisIframe.style.visibility = 'hidden';
+
+          const canvas = await html2canvas(target, {{
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            backgroundColor: '#ffffff'
+          }});
+
+          if (header) header.style.visibility = prevHeader;
+          if (thisIframe) thisIframe.style.visibility = '';
+
+          const link = document.createElement('a');
+          link.download = "{nombre_archivo}";
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          estado.innerText = "✅ Imagen descargada con éxito";
+          setTimeout(() => {{ estado.innerText = ""; }}, 4000);
+        }} catch (err) {{
+          console.error("Error al capturar:", err);
+          estado.innerText = "⚠️ Error: " + err.message;
+        }} finally {{
+          btn.disabled = false;
+        }}
+      }});
+    </script>
+    """
+    components.html(html_code, height=52)
+
+_boton_captura_pantalla("reporte_seguimiento_usos.png")
 
 b1, b2 = st.columns(2)
 with b1:
