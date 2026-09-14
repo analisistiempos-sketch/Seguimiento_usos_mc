@@ -7,7 +7,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
+import importlib
 import config_promedios
+importlib.reload(config_promedios)
 import data_loader
 import generador_figuras
 
@@ -98,8 +100,10 @@ def _label_post():
 
 
 # ---------------- carga ----------------
-f_ini = min(pd.Timestamp(s["desde"]) for s in semanas.values()).date()
-f_fin = max(pd.Timestamp(s["hasta"]) for s in semanas.values()).date()
+f_ini_semanas = min(pd.Timestamp(s["desde"]) for s in semanas.values()).date()
+f_fin_semanas = max(pd.Timestamp(s["hasta"]) for s in semanas.values()).date()
+f_ini = min(f_ini_semanas, datetime.date(2026, 7, 1))
+f_fin = f_fin_semanas
 df = data_loader.cargar_rango(f_ini, f_fin, incluir_historico=False)
 dim = data_loader.cargar_dim_estacion()
 cal = data_loader.cargar_calendario()
@@ -211,44 +215,124 @@ def _titulo_tabla(texto):
 c1, c2, c3 = st.columns(3)
 with c1:
     _titulo_tabla("1. Total de usos por día tipo")
-    st.dataframe(_estilo_num(pd.DataFrame(tabla_total)), hide_index=True, width="stretch", height=200)
+    st.dataframe(_estilo_num(pd.DataFrame(tabla_total)), hide_index=True, width="stretch", height=285)
 with c2:
     _titulo_tabla("2. Promedio de usos por día tipo")
-    st.dataframe(_estilo_num(pd.DataFrame(tabla_prom)), hide_index=True, width="stretch", height=200)
+    st.dataframe(_estilo_num(pd.DataFrame(tabla_prom)), hide_index=True, width="stretch", height=285)
 with c3:
     _titulo_tabla("3. Variación del promedio vs pre-terremoto")
-    st.dataframe(_estilo_var(pd.DataFrame(tabla_var)), hide_index=True, width="stretch", height=200)
+    st.dataframe(_estilo_var(pd.DataFrame(tabla_var)), hide_index=True, width="stretch", height=285)
 
-# ---------------- comportamiento por hora (promedio) ----------------
-st.subheader("4. Comportamiento por hora (promedio)")
-df_hora = df.copy()
-df_hora["Semana"] = df_hora["fecha"].map(_semana_de)
-df_hora = df_hora[df_hora["Semana"] != "Fuera"]
-por_hora = df_hora.groupby(["Semana", "hora"])["Uso_pago"].sum().reset_index()
-n_dias = df_hora.groupby("Semana")["fecha"].nunique().rename("n_dias")
-por_hora = por_hora.merge(n_dias, on="Semana")
-por_hora["Promedio"] = por_hora["Uso_pago"] / por_hora["n_dias"]
-
-# rejilla completa solo para semanas con datos, horas 4-23
-horas_linea = list(range(4, 24))
-grid = pd.DataFrame(
-    [(s, h) for s in semanas.keys() if s in semanas_con_datos for h in horas_linea],
-    columns=["Semana", "hora"],
+# ---------------- 4. Gráfico Tendencia de Usos Pagos ----------------
+st.markdown(
+    """
+    <div style="text-align: center; margin-top: 25px; margin-bottom: 2px;">
+        <span style="font-size: 1.55rem; font-weight: 700; color: #2C3E50;">1. Grafico Tendencia de Usos Pagos</span>
+    </div>
+    <div style="text-align: center; margin-bottom: 12px;">
+        <span style="font-size: 0.88rem; color: #7F8C8D;">Ft.  Descarga Apex</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
-por_hora = por_hora.merge(grid, on=["Semana", "hora"], how="right")
-por_hora["Promedio"] = por_hora["Promedio"].fillna(0)
-por_hora = por_hora.sort_values("hora")
 
-color_map = {nombre: s["color"] for nombre, s in semanas.items()}
-fig_hora = px.line(
-    por_hora, x="hora", y="Promedio", color="Semana",
-    color_discrete_map=color_map,
-    category_orders={"Semana": list(semanas.keys())},
-    labels={"hora": "Hora", "Promedio": "Promedio de usos", "Semana": ""},
+df_diario = df.groupby("fecha", as_index=False)["Uso_pago"].sum().sort_values("fecha")
+df_diario = _con_dia_tipo(df_diario, cal)
+df_diario["Semana"] = df_diario["fecha"].map(_semana_de)
+if cal is not None and not cal.empty:
+    mapa_nom = cal[["fecha", "Dia.nombre"]].drop_duplicates("fecha")
+    df_diario = df_diario.merge(mapa_nom, on="fecha", how="left")
+else:
+    df_diario["Dia.nombre"] = ""
+df_diario["dia_nom"] = df_diario["Dia.nombre"].fillna("")
+df_diario["texto_usos"] = df_diario["Uso_pago"].apply(lambda x: f"{x:,.0f}".replace(",", "."))
+
+fig_tendencia = go.Figure()
+
+# Curva suave y fluida idéntica a la referencia de Apex
+fig_tendencia.add_trace(go.Scatter(
+    x=df_diario["fecha"],
+    y=df_diario["Uso_pago"],
+    mode="lines",
+    name="Usos Pagos",
+    line=dict(
+        color="#205493",
+        width=2.8,
+        shape="spline",
+        smoothing=0.8,
+    ),
+    customdata=df_diario[["dia_nom", "Tipo_dia", "texto_usos"]].values,
+    hovertemplate="<b>Fecha: %{x|%d/%m/%Y} (%{customdata[0]})</b><br>Tipo de día: %{customdata[1]}<br>Usos Pagos: <b>%{customdata[2]}</b><extra></extra>",
+))
+
+# Hito del 10 de agosto (Terremoto) con línea punteada vertical celeste
+fig_tendencia.add_vline(
+    x="2026-08-10",
+    line_width=2.5,
+    line_dash="dot",
+    line_color="#90CAF9",
 )
-fig_hora.update_layout(height=450, xaxis=dict(dtick=1, range=[4, 23]), legend_title_text=None)
-st.plotly_chart(fig_hora, width="stretch")
-st.caption("Promedio de usos por hora = total de esa hora en la semana ÷ días de esa semana con datos.")
+
+max_y = max(df_diario["Uso_pago"].max() * 1.12, 310000)
+
+fig_tendencia.update_layout(
+    height=420,
+    margin=dict(t=25, b=35, l=75, r=25),
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    hovermode="x unified",
+    xaxis=dict(
+        showgrid=False,
+        linecolor="#D0D7DE",
+        linewidth=1,
+        tickformat="%b %Y",
+        dtick="M1",
+        tickfont=dict(size=12, color="#555555"),
+    ),
+    yaxis=dict(
+        showgrid=True,
+        gridcolor="#F0F2F5",
+        gridwidth=1,
+        zeroline=False,
+        tickmode="array",
+        tickvals=[100000, 200000, 300000],
+        ticktext=[",1 mill.", ",2 mill.", ",3 mill."],
+        range=[0, max_y],
+        tickfont=dict(size=12, color="#555555"),
+    ),
+    showlegend=False,
+)
+
+st.plotly_chart(fig_tendencia, width="stretch")
+
+with st.expander("⏰ Ver comportamiento promedio por hora"):
+    df_hora = df.copy()
+    df_hora["Semana"] = df_hora["fecha"].map(_semana_de)
+    df_hora = df_hora[df_hora["Semana"] != "Fuera"]
+    por_hora = df_hora.groupby(["Semana", "hora"])["Uso_pago"].sum().reset_index()
+    n_dias = df_hora.groupby("Semana")["fecha"].nunique().rename("n_dias")
+    por_hora = por_hora.merge(n_dias, on="Semana")
+    por_hora["Promedio"] = por_hora["Uso_pago"] / por_hora["n_dias"]
+
+    horas_linea = list(range(4, 24))
+    grid = pd.DataFrame(
+        [(s, h) for s in semanas.keys() if s in semanas_con_datos for h in horas_linea],
+        columns=["Semana", "hora"],
+    )
+    por_hora = por_hora.merge(grid, on=["Semana", "hora"], how="right")
+    por_hora["Promedio"] = por_hora["Promedio"].fillna(0)
+    por_hora = por_hora.sort_values("hora")
+
+    color_map = {nombre: s["color"] for nombre, s in semanas.items()}
+    fig_hora = px.line(
+        por_hora, x="hora", y="Promedio", color="Semana",
+        color_discrete_map=color_map,
+        category_orders={"Semana": list(semanas.keys())},
+        labels={"hora": "Hora", "Promedio": "Promedio de usos", "Semana": ""},
+    )
+    fig_hora.update_layout(height=450, xaxis=dict(dtick=1, range=[4, 23]), legend_title_text=None)
+    st.plotly_chart(fig_hora, width="stretch")
+    st.caption("Promedio de usos por hora = total de esa hora en la semana ÷ días de esa semana con datos.")
 
 
 # ---------------- sección de afectación ----------------

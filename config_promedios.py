@@ -92,7 +92,15 @@ HORA_CORTE_HOY = None
 CORREDORES_EXCLUIDOS = ['Aerosuspendido', 'Sin Identificar']
 ZONAS_EXCLUIDAS = ['Prueba']
 
-SEMANAS_TERREMOTO = {'3 - 9 ago': {'desde': '2026-08-03', 'hasta': '2026-08-09', 'color': '#2CA02C'}, '10 - 16 ago': {'desde': '2026-08-10', 'hasta': '2026-08-16', 'color': '#D62728'}, '17 - 23 ago': {'desde': '2026-08-17', 'hasta': '2026-08-23', 'color': '#FF7F0E'}, '24 - 30 ago': {'desde': '2026-08-24', 'hasta': '2026-08-30', 'color': '#FFB347'}, '31 ago - 6 sep': {'desde': '2026-08-31', 'hasta': '2026-09-06', 'color': '#9467BD'}}
+SEMANAS_TERREMOTO = {
+    '3 - 9 ago': {'desde': '2026-08-03', 'hasta': '2026-08-09', 'color': '#2CA02C'},
+    '10 - 16 ago': {'desde': '2026-08-10', 'hasta': '2026-08-16', 'color': '#D62728'},
+    '17 - 23 ago': {'desde': '2026-08-17', 'hasta': '2026-08-23', 'color': '#FF7F0E'},
+    '24 - 30 ago': {'desde': '2026-08-24', 'hasta': '2026-08-30', 'color': '#FFB347'},
+    '31 ago - 6 sep': {'desde': '2026-08-31', 'hasta': '2026-09-06', 'color': '#9467BD'},
+    '7 - 13 sep': {'desde': '2026-09-07', 'hasta': '2026-09-13', 'color': '#17BECF'},
+    '14 - 20 sep': {'desde': '2026-09-14', 'hasta': '2026-09-20', 'color': '#1F77B4'},
+}
 SEMANA_BASE = '3 - 9 ago'
 
 
