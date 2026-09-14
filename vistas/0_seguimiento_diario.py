@@ -333,7 +333,7 @@ with col_barras:
     ult_fecha = df["fecha"].max().date()
     ini21 = ult_fecha - datetime.timedelta(days=config_promedios.ULTIMOS_DIAS_BARRAS - 1)
     df21 = cargar_datos(ini21, ult_fecha, incluir_historico)
-    df21 = _aplicar_filtros(df21, dim, filtro_corr, filtro_est, filtro_zona, cal, None)
+    df21 = _aplicar_filtros(df21, dim, filtro_corr, filtro_est, filtro_zona, cal, filtro_tipo)
     bar21 = df21.groupby("fecha")["Uso_pago"].sum().reset_index()
     bar21 = bar21.sort_values("fecha", ascending=False)
     cal = cargar_cal()
