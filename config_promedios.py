@@ -117,7 +117,7 @@ LINEAS = [
     
    
 
-    {'mostrar': True, 'fecha': '2026-09-25', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '25_septiembre'},
+    {'mostrar': True, 'fecha': '2026-09-28', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '28_septiembre'},
 
     ]
 '''
