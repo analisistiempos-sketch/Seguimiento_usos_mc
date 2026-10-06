@@ -102,6 +102,7 @@ SEMANAS_TERREMOTO = {
     '14 - 20 sep': {'desde': '2026-09-14', 'hasta': '2026-09-20', 'color': '#1F77B4'},
     '21 - 27 sep': {'desde': '2026-09-21', 'hasta': '2026-09-27', 'color': '#A0522D'},
     '28 sep - 4 oct': {'desde': '2026-09-28', 'hasta': '2026-10-04', 'color': '#8A2BE2'},
+    '5 - 11 oct': {'desde': '2026-10-05', 'hasta': '2026-10-11', 'color': '#FF00FF'},
 }
 SEMANA_BASE = '3 - 9 ago'
 
@@ -117,7 +118,7 @@ LINEAS = [
     
    
 
-    {'mostrar': True, 'fecha': '2026-10-02', 'color': '#4B0082', 'estilo': 'solid', 'nombre': '02_Octubre'}
+    {'mostrar': True, 'fecha': '2026-10-05', 'color': '#FF00FF', 'estilo': 'solid', 'nombre': '05_Octubre'}
 
     ]
 '''
