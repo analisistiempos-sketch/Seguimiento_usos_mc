@@ -88,7 +88,7 @@ ULTIMOS_DIAS_BARRAS = 21
 INCLUIR_HISTORICO = False
 # HORA_CORTE_HOY: última hora (incluida) que se muestra para el día de HOY en la línea.
 # Ej. 8 = mostrar hasta las 8:59 · 9 = hasta las 9:59 · None = mostrar todo (hasta la hora con datos).
-HORA_CORTE_HOY = None
+HORA_CORTE_HOY = 10
 CORREDORES_EXCLUIDOS = ['Aerosuspendido', 'Sin Identificar']
 ZONAS_EXCLUIDAS = ['Prueba']
 
@@ -111,15 +111,15 @@ SEMANA_BASE = '3 - 9 ago'
 # Habil
 
 LINEAS = [
-    {'mostrar': True, 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
-    {'mostrar': True, 'desde': '2026-08-10', 'hasta': '2026-08-14', 'color': '#919191', 'estilo': 'dash', 'nombre': 'Promedio 10-14 ago'},
+    {'mostrar': False, 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
+    {'mostrar': False, 'desde': '2026-08-10', 'hasta': '2026-08-14', 'color': '#919191', 'estilo': 'dash', 'nombre': 'Promedio 10-14 ago'},
     {'mostrar': False, 'desde': '2026-08-18', 'hasta': '2026-08-21', 'color': '#2f35b5', 'estilo': 'dash', 'nombre': 'Promedio 18-21 ago'}, 
     {'mostrar': False, 'desde': '2026-08-24', 'hasta': '2026-08-28', 'color': '#8C564B', 'estilo': 'dash', 'nombre': 'Promedio 24-28 ago'}, 
-    {'mostrar': False, 'desde': '2026-08-31', 'hasta': '2026-09-04', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 31ago-04sep'},
+    {'mostrar': True, 'desde': '2026-10-05', 'hasta': '2026-10-11', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 31ago-04sep'},
     
    
 
-    {'mostrar': True, 'fecha': '2026-10-09', 'color': '#FF00FF', 'estilo': 'solid', 'nombre': '09_Octubre'}
+    {'mostrar': True, 'fecha': '2026-10-13', 'color': '#FF00FF', 'estilo': 'solid', 'nombre': '13_Octubre'}
 
     ]
 '''
