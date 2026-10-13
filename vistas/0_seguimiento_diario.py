@@ -169,10 +169,17 @@ def _figura_lineas(df, lineas, cal=None, filtro_tipo_global=None):
             y_vals = [serie.get(h, 0) if h <= max_hora else None for h in horas]
         else:
             y_vals = [serie.get(h, 0) for h in horas]
+
+        # Total acumulado o promedio diario de la serie
+        total_dia = serie.sum() if not serie.empty else 0
+        total_str = f"{total_dia:,.0f}".replace(",", ".")
+        nombre_leyenda = f"{etiqueta} ({total_str})"
+
         fig.add_trace(go.Scatter(
-            x=horas, y=y_vals, name=etiqueta,
+            x=horas, y=y_vals, name=nombre_leyenda,
             line=dict(color=linea["color"], dash=linea["estilo"]),
             connectgaps=False,
+            hovertemplate=f"<b>{etiqueta}</b><br>Hora %{{x}}: %{{y:,.0f}}<br>Total día: {total_str}<extra></extra>",
         ))
     fig.update_layout(
         height=420, hovermode="x unified",
