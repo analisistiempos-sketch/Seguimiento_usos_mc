@@ -77,8 +77,7 @@ def filtrar_top_dias(df, top=None):
 def _ref_de_linea(df, linea, cal=None, con_dia_tipo_fn=None, filtro_tipo_fallback=None):
     """Aplica a un rango (desde/hasta) el filtro de tipo de día y el Top N días.
 
-    Devuelve (ref_filtrado, tipo_dia, top_n, n_candidatos), donde n_candidatos es
-    el número de días que quedaron antes de aplicar el Top N.
+    Devuelve (ref_filtrado, tipo_dia, top_n).
     """
     ref = df[df["fecha"].between(pd.Timestamp(linea["desde"]), pd.Timestamp(linea["hasta"]))]
 
@@ -105,7 +104,6 @@ def _ref_de_linea(df, linea, cal=None, con_dia_tipo_fn=None, filtro_tipo_fallbac
             ref = ref[ref["Tipo_dia"] == tipo_dia]
 
     # 2. Filtrar Top N días con más usos (si aplica)
-    n_candidatos = int(ref["fecha"].nunique())
     top_n = linea.get("top")
     if top_n is None:
         top_n = extraer_top_nombre(linea.get("nombre"))
@@ -113,7 +111,7 @@ def _ref_de_linea(df, linea, cal=None, con_dia_tipo_fn=None, filtro_tipo_fallbac
     if top_n:
         ref = filtrar_top_dias(ref, top_n)
 
-    return ref, tipo_dia, top_n, n_candidatos
+    return ref, tipo_dia, top_n
 
 
 def calcular_serie_linea(df, linea, cal=None, con_dia_tipo_fn=None, filtro_tipo_fallback=None):
@@ -130,7 +128,7 @@ def calcular_serie_linea(df, linea, cal=None, con_dia_tipo_fn=None, filtro_tipo_
         etiqueta = linea.get("nombre") or pd.Timestamp(linea["fecha"]).strftime("%d/%m")
         return serie, etiqueta
 
-    ref, tipo_dia, top_n, _ = _ref_de_linea(df, linea, cal, con_dia_tipo_fn, filtro_tipo_fallback)
+    ref, tipo_dia, top_n = _ref_de_linea(df, linea, cal, con_dia_tipo_fn, filtro_tipo_fallback)
     serie = promedio_por_hora(ref)
 
     # 3. Etiqueta
@@ -149,31 +147,3 @@ def calcular_serie_linea(df, linea, cal=None, con_dia_tipo_fn=None, filtro_tipo_
         etiqueta = " ".join(partes)
 
     return serie, etiqueta
-
-
-def describe_linea(df, linea, cal=None, con_dia_tipo_fn=None, filtro_tipo_fallback=None):
-    """Metadatos de una línea para mostrarlos como diagnóstico.
-
-    Devuelve: tipo (día/promedio), tipo_dia, top_n, n_dias (días realmente usados)
-    y total (suma de la serie por hora = total/promedio diario).
-    """
-    if "fecha" in linea:
-        sub = df[df["fecha"] == pd.Timestamp(linea["fecha"]).normalize()]
-        return {
-            "tipo": "día",
-            "tipo_dia": None,
-            "top": None,
-            "n_dias": int(sub["fecha"].nunique()),
-            "n_candidatos": int(sub["fecha"].nunique()),
-            "total": float(sub["Uso_pago"].sum()),
-        }
-
-    ref, tipo_dia, top_n, n_candidatos = _ref_de_linea(df, linea, cal, con_dia_tipo_fn, filtro_tipo_fallback)
-    return {
-        "tipo": "promedio",
-        "tipo_dia": tipo_dia,
-        "top": top_n,
-        "n_dias": int(ref["fecha"].nunique()),
-        "n_candidatos": n_candidatos,
-        "total": float(promedio_por_hora(ref).sum()),
-    }

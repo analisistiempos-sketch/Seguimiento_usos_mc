@@ -139,42 +139,6 @@ def _lineas_config():
     return [l for l in fuente if l.get("mostrar", True)]
 
 
-def _caption_resumen_lineas(df, lineas, cal=None, filtro_tipo_global=None):
-    """Muestra los parámetros realmente aplicados a cada curva (Top, tipo, días, total)."""
-    partes = []
-    for linea in lineas:
-        if linea.get("nombre"):
-            etiqueta = linea["nombre"]
-        elif "fecha" in linea:
-            etiqueta = pd.Timestamp(linea["fecha"]).strftime("%d/%m")
-        else:
-            etiqueta = f"{linea.get('desde', '')}–{linea.get('hasta', '')}"
-        try:
-            info = kpi.describe_linea(
-                df, linea, cal=cal,
-                con_dia_tipo_fn=_con_dia_tipo, filtro_tipo_fallback=filtro_tipo_global,
-            )
-        except Exception:
-            continue
-        bits = []
-        if info["tipo"] == "día":
-            bits.append("día específico")
-        else:
-            if info["tipo_dia"]:
-                bits.append(str(info["tipo_dia"]))
-            bits.append(f"Top {info['top']}" if info["top"] else "Todos los días")
-        n = info["n_dias"]
-        m = info.get("n_candidatos", n)
-        if info["tipo"] == "promedio" and m != n:
-            bits.append(f"{n} de {m} días")
-        else:
-            bits.append(f"{n} día{'s' if n != 1 else ''}")
-        bits.append(f"Total {info['total']:,.0f}".replace(",", "."))
-        partes.append(f"**{etiqueta}** → " + " · ".join(bits))
-    if partes:
-        st.caption("Parámetros aplicados: " + "   |   ".join(partes))
-
-
 def _fechas_lineas(lineas):
     fechas = []
     for l in lineas:
@@ -478,7 +442,6 @@ with col_linea:
         df_cfg = _aplicar_filtros(df_cfg, dim, filtro_corr, filtro_est, filtro_zona, cal, tipos=None)
         fig_linea = _figura_lineas(df_cfg, lineas, cal=cal, filtro_tipo_global=filtro_tipo)
         st.plotly_chart(fig_linea, width="stretch", key="fig_lineas_resumen")
-        _caption_resumen_lineas(df_cfg, lineas, cal=cal, filtro_tipo_global=filtro_tipo)
     else:
         fig_linea = go.Figure()
         st.info("Configura LINEAS en config_promedios.py (con mostrar: True).")
