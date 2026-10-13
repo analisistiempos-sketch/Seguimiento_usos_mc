@@ -131,23 +131,19 @@ def generar_lineas():
     df_cfg = data_loader.cargar_rango(f_ini_cfg, f_fin_cfg, incluir_historico=False)
     dim = data_loader.cargar_dim_estacion()
     df_cfg = _aplicar_filtros(df_cfg, dim)
+    cal = data_loader.cargar_calendario()
 
     horas = list(range(4, 24))
     hoy = datetime.date.today()
     fig = go.Figure()
     for linea in lineas:
+        es_hoy = False
         if "fecha" in linea:
             serie = kpi.serie_dia_por_hora(df_cfg, linea["fecha"])
             etiqueta = linea.get("nombre") or pd.Timestamp(linea["fecha"]).strftime("%d/%m")
             es_hoy = pd.Timestamp(linea["fecha"]).date() == hoy
         else:
-            ref = df_cfg[df_cfg["fecha"].between(pd.Timestamp(linea["desde"]), pd.Timestamp(linea["hasta"]))]
-            serie = kpi.promedio_por_hora(ref)
-            etiqueta = linea.get("nombre") or (
-                f"Prom. {pd.Timestamp(linea['desde']).strftime('%d/%m')}-"
-                f"{pd.Timestamp(linea['hasta']).strftime('%d/%m')}"
-            )
-            es_hoy = False
+            serie, etiqueta = kpi.calcular_serie_linea(df_cfg, linea, cal=cal)
         if es_hoy:
             max_hora = max(serie.keys()) if not serie.empty else -1
             y_vals = [serie.get(h, 0) if h <= max_hora else None for h in horas]

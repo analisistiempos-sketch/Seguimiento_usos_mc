@@ -107,6 +107,32 @@ SEMANAS_TERREMOTO = {
 }
 SEMANA_BASE = '3 - 9 ago'
 
+# ==============================================================================
+# GUÍA DE CONFIGURACIÓN DE LÍNEAS (LINEAS)
+# ==============================================================================
+# Cada elemento de la lista representa una curva en el gráfico de líneas.
+#
+# 1. DÍA ESPECÍFICO:
+#    {'mostrar': True, 'fecha': 'AAAA-MM-DD', 'color': '#HEX', 'estilo': 'solid'|'dash'|'dot', 'nombre': 'Nombre a mostrar'}
+#
+# 2. PROMEDIO DE UN PERIODO / TODO EL AÑO:
+#    {
+#        'mostrar': True,                  # True o False para activar/desactivar la curva
+#        'desde': '2026-01-01',            # Fecha inicial (AAAA-MM-DD)
+#        'hasta': '2026-10-13',            # Fecha final (AAAA-MM-DD)
+#        'color': '#87CEEB',               # Color en formato HEX (ej. ver diccionario COLORES arriba)
+#        'estilo': 'dash',                 # 'solid', 'dash' (guiones) o 'dot' (puntos)
+#        'nombre': 'Prom_Hab_Top_10_2026', # Nombre visible en la leyenda
+#
+#        # --- PARÁMETROS OPCIONALES DE FILTRO Y TOP ---
+#        'tipo_dia': 'Habíl',              # 'Habíl' | 'Sábado' | 'Domingo/Festivo' | 'Todos' (o None)
+#        'top': 10                         # Número de días con mayor demanda (ej. 10 para Top 10).
+#                                          # Usa 0 o None para promediar TODOS los días del periodo.
+#    }
+# ==============================================================================
+
+
+
 
 # Habil
 
@@ -115,9 +141,8 @@ LINEAS = [
     {'mostrar': False, 'desde': '2026-08-10', 'hasta': '2026-08-14', 'color': '#919191', 'estilo': 'dash', 'nombre': 'Promedio 10-14 ago'},
     {'mostrar': False, 'desde': '2026-08-18', 'hasta': '2026-08-21', 'color': '#2f35b5', 'estilo': 'dash', 'nombre': 'Promedio 18-21 ago'}, 
     {'mostrar': False, 'desde': '2026-08-24', 'hasta': '2026-08-28', 'color': '#8C564B', 'estilo': 'dash', 'nombre': 'Promedio 24-28 ago'}, 
-    {'mostrar': True, 'desde': '2026-10-05', 'hasta': '2026-10-09', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 05-09 oct'},
-    
-   
+    {'mostrar': False, 'desde': '2026-10-05', 'hasta': '2026-10-09', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 05-09 oct'},
+    {'mostrar': True, 'desde': '2026-01-01', 'hasta': '2026-10-13', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Prom_Hab_Top_10_2026', 'tipo_dia': 'Habíl', 'top': 10},
 
     {'mostrar': True, 'fecha': '2026-10-13', 'color': '#FF00FF', 'estilo': 'solid', 'nombre': '13_Octubre'}
 

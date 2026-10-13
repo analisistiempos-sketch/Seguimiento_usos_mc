@@ -141,25 +141,22 @@ def _fechas_lineas(lineas):
     return fechas
 
 
-def _figura_lineas(df, lineas):
+def _figura_lineas(df, lineas, cal=None, filtro_tipo_global=None):
     horas = list(range(4, 24))
     colombia_tz = datetime.timezone(datetime.timedelta(hours=-5))
     hoy = datetime.datetime.now(colombia_tz).date()
     hora_actual = datetime.datetime.now(colombia_tz).hour
     fig = go.Figure()
     for linea in lineas:
+        es_hoy = False
         if "fecha" in linea:
             serie = kpi.serie_dia_por_hora(df, linea["fecha"])
             etiqueta = linea.get("nombre") or pd.Timestamp(linea["fecha"]).strftime("%d/%m")
             es_hoy = pd.Timestamp(linea["fecha"]).date() == hoy
         else:
-            ref = df[df["fecha"].between(pd.Timestamp(linea["desde"]), pd.Timestamp(linea["hasta"]))]
-            serie = kpi.promedio_por_hora(ref)
-            etiqueta = linea.get("nombre") or (
-                f"Prom. {pd.Timestamp(linea['desde']).strftime('%d/%m')}-"
-                f"{pd.Timestamp(linea['hasta']).strftime('%d/%m')}"
+            serie, etiqueta = kpi.calcular_serie_linea(
+                df, linea, cal=cal, con_dia_tipo_fn=_con_dia_tipo, filtro_tipo_fallback=filtro_tipo_global
             )
-            es_hoy = False
         if es_hoy:
             max_hora = max(serie.keys()) if not serie.empty else -1
             corte = getattr(config_promedios, "HORA_CORTE_HOY", None)
@@ -229,7 +226,30 @@ def _configurador_lineas():
                     d1, d2 = st.columns(2)
                     desde = d1.text_input("Desde", value=linea.get("desde", ""), key=f"{lid}_d")
                     hasta = d2.text_input("Hasta", value=linea.get("hasta", ""), key=f"{lid}_h")
-                    nl = {"mostrar": mostrar, "desde": desde, "hasta": hasta, "color": color, "estilo": estilo, "nombre": nombre}
+
+                    opciones_td = ["Todos", "Habíl", "Sábado", "Domingo/Festivo"]
+                    td_raw = linea.get("tipo_dia") or kpi.extraer_tipo_dia_nombre(linea.get("nombre")) or "Todos"
+                    td_norm = kpi.normalizar_tipo_dia(td_raw) or "Todos"
+                    idx_td = opciones_td.index(td_norm) if td_norm in opciones_td else 0
+
+                    c_td, c_top = st.columns(2)
+                    tipo_dia_sel = c_td.selectbox("Tipo de día", opciones_td, index=idx_td, key=f"{lid}_td")
+
+                    val_top_init = int(linea.get("top") or kpi.extraer_top_nombre(linea.get("nombre")) or 0)
+                    top_n_sel = c_top.number_input("Top días (0 = todo el año)", min_value=0, max_value=366, value=val_top_init, step=1, key=f"{lid}_top")
+
+                    nl = {
+                        "mostrar": mostrar,
+                        "desde": desde,
+                        "hasta": hasta,
+                        "color": color,
+                        "estilo": estilo,
+                        "nombre": nombre,
+                    }
+                    if tipo_dia_sel != "Todos":
+                        nl["tipo_dia"] = tipo_dia_sel
+                    if top_n_sel > 0:
+                        nl["top"] = int(top_n_sel)
                 else:
                     fecha = st.text_input("Fecha (AAAA-MM-DD)", value=linea.get("fecha", ""), key=f"{lid}_f")
                     nl = {"mostrar": mostrar, "fecha": fecha, "color": color, "estilo": estilo, "nombre": nombre}
@@ -380,8 +400,8 @@ with col_linea:
         f_ini_cfg = min(pd.Timestamp(x) for x in fechas_cfg).date()
         f_fin_cfg = max(pd.Timestamp(x) for x in fechas_cfg).date()
         df_cfg = cargar_datos(f_ini_cfg, f_fin_cfg, incluir_historico)
-        df_cfg = _aplicar_filtros(df_cfg, dim, filtro_corr, filtro_est, filtro_zona, cal, filtro_tipo)
-        fig_linea = _figura_lineas(df_cfg, lineas)
+        df_cfg = _aplicar_filtros(df_cfg, dim, filtro_corr, filtro_est, filtro_zona, cal, tipos=None)
+        fig_linea = _figura_lineas(df_cfg, lineas, cal=cal, filtro_tipo_global=filtro_tipo)
         st.plotly_chart(fig_linea, width="stretch", key="fig_lineas_resumen")
     else:
         fig_linea = go.Figure()

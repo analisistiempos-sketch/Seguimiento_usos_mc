@@ -64,7 +64,9 @@ def fechas_lineas(lineas):
     return fechas
 
 
-def figura_lineas(df, lineas):
+def figura_lineas(df, lineas, cal=None):
+    if cal is None:
+        cal = data_loader.cargar_calendario()
     horas = list(range(24))
     fig = go.Figure()
     for linea in lineas:
@@ -72,12 +74,7 @@ def figura_lineas(df, lineas):
             serie = kpi.serie_dia_por_hora(df, linea["fecha"])
             etiqueta = linea.get("nombre") or pd.Timestamp(linea["fecha"]).strftime("%d/%m")
         else:
-            ref = df[df["fecha"].between(pd.Timestamp(linea["desde"]), pd.Timestamp(linea["hasta"]))]
-            serie = kpi.promedio_por_hora(ref)
-            etiqueta = linea.get("nombre") or (
-                f"Prom. {pd.Timestamp(linea['desde']).strftime('%d/%m')}-"
-                f"{pd.Timestamp(linea['hasta']).strftime('%d/%m')}"
-            )
+            serie, etiqueta = kpi.calcular_serie_linea(df, linea, cal=cal)
         fig.add_trace(go.Scatter(
             x=horas, y=[serie.get(h, 0) for h in horas], name=etiqueta,
             line=dict(color=linea["color"], dash=linea["estilo"]),
