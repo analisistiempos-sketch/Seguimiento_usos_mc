@@ -29,16 +29,54 @@ def _url(nombre=None):
     return f"{base}/{nombre}" if nombre else base
 
 
-def listar_parquets():
-    r = requests.get(_url(), headers=_headers(), timeout=30)
-    if r.status_code == 404:
-        return []
+def _listar_parquets_tree():
+    """Respaldo: lista los .parquet usando la API de arboles (recursiva).
+
+    Necesario cuando la carpeta tiene mas de 1000 entradas, porque la API de
+    contenidos trunca la respuesta y NO soporta paginacion real.
+    """
+    info = requests.get(f"{_API}/repos/{_repo()}", headers=_headers(), timeout=30)
+    info.raise_for_status()
+    branch = config.GITHUB_BRANCH or info.json().get("default_branch", "main")
+    r = requests.get(
+        f"{_API}/repos/{_repo()}/git/trees/{branch}",
+        headers=_headers(), params={"recursive": "1"}, timeout=60,
+    )
     r.raise_for_status()
-    return {
-        e["name"]: e["size"]
-        for e in r.json()
-        if e.get("type") == "file" and e["name"].lower().endswith(".parquet")
-    }
+    prefijo = config.GITHUB_RUTA.strip("/")
+    resultado = {}
+    for nodo in r.json().get("tree", []):
+        if nodo.get("type") != "blob":
+            continue
+        path = nodo["path"]
+        if prefijo and not path.startswith(prefijo + "/"):
+            continue
+        nombre = path.split("/")[-1]
+        if nombre.lower().endswith(".parquet"):
+            resultado[nombre] = nodo.get("size", 0)
+    return resultado
+
+
+def listar_parquets():
+    """Lista los .parquet de GITHUB_RUTA (nombre -> tamano).
+
+    La API de contenidos devuelve hasta 1000 entradas en una sola respuesta y
+    trunca el resto. Si se alcanza ese limite, se usa la API de arboles.
+    """
+    r = requests.get(_url(), headers=_headers(), params={"per_page": 1000}, timeout=30)
+    if r.status_code == 404:
+        return {}
+    r.raise_for_status()
+    items = r.json()
+    if not isinstance(items, list):
+        return {}
+    if len(items) < 1000:
+        return {
+            e["name"]: e["size"]
+            for e in items
+            if e.get("type") == "file" and e["name"].lower().endswith(".parquet")
+        }
+    return _listar_parquets_tree()
 
 
 def descargar_parquet(nombre, destino):
