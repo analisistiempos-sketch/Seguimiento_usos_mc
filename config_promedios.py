@@ -1,4 +1,5 @@
 # Configuración del panel (actualizada desde la app)
+from pandas._typing import F
 COLORES = {
     'azul_marino': '#000080',
     'azul_oscuro': '#00008B',
