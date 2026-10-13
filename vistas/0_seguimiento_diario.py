@@ -131,8 +131,48 @@ def _aplicar_filtros(df, dim, corredores, estaciones, zonas=None, cal=None, tipo
 
 
 def _lineas_config():
-    fuente = st.session_state.get("lineas_activas", config_promedios.LINEAS)
+    # config_promedios.py es la fuente de verdad. El estado de sesión solo se usa
+    # cuando el usuario pulsa "✅ Aplicar cambios al gráfico" (previsualización).
+    fuente = st.session_state.get("lineas_activas")
+    if fuente is None:
+        fuente = config_promedios.LINEAS
     return [l for l in fuente if l.get("mostrar", True)]
+
+
+def _caption_resumen_lineas(df, lineas, cal=None, filtro_tipo_global=None):
+    """Muestra los parámetros realmente aplicados a cada curva (Top, tipo, días, total)."""
+    partes = []
+    for linea in lineas:
+        if linea.get("nombre"):
+            etiqueta = linea["nombre"]
+        elif "fecha" in linea:
+            etiqueta = pd.Timestamp(linea["fecha"]).strftime("%d/%m")
+        else:
+            etiqueta = f"{linea.get('desde', '')}–{linea.get('hasta', '')}"
+        try:
+            info = kpi.describe_linea(
+                df, linea, cal=cal,
+                con_dia_tipo_fn=_con_dia_tipo, filtro_tipo_fallback=filtro_tipo_global,
+            )
+        except Exception:
+            continue
+        bits = []
+        if info["tipo"] == "día":
+            bits.append("día específico")
+        else:
+            if info["tipo_dia"]:
+                bits.append(str(info["tipo_dia"]))
+            bits.append(f"Top {info['top']}" if info["top"] else "Todos los días")
+        n = info["n_dias"]
+        m = info.get("n_candidatos", n)
+        if info["tipo"] == "promedio" and m != n:
+            bits.append(f"{n} de {m} días")
+        else:
+            bits.append(f"{n} día{'s' if n != 1 else ''}")
+        bits.append(f"Total {info['total']:,.0f}".replace(",", "."))
+        partes.append(f"**{etiqueta}** → " + " · ".join(bits))
+    if partes:
+        st.caption("Parámetros aplicados: " + "   |   ".join(partes))
 
 
 def _fechas_lineas(lineas):
@@ -194,9 +234,16 @@ def _figura_lineas(df, lineas, cal=None, filtro_tipo_global=None):
 
 
 def _configurador_lineas():
-    import importlib
-
     with st.sidebar.expander("📅 Selección de Periodo"):
+        # Si cambió la configuración del archivo, se re-siembra todo desde él.
+        # Esto evita que widgets viejos sigan pisando el archivo (causa del Top 10 ignorado).
+        firma = repr(config_promedios.LINEAS)
+        if st.session_state.get("_ln_firma") != firma:
+            for clave in list(st.session_state.keys()):
+                if clave in ("lineas_activas", "ln_ids", "ln_tipo") or str(clave).startswith("lnw_"):
+                    st.session_state.pop(clave, None)
+            st.session_state["_ln_firma"] = firma
+
         if "ln_ids" not in st.session_state:
             ids, tipos = [], {}
             for i, linea in enumerate(config_promedios.LINEAS):
@@ -208,11 +255,15 @@ def _configurador_lineas():
 
         c1, c2 = st.columns(2)
         if c1.button("➕ Día"):
-            lid = "d" + str(len(st.session_state.ln_ids))
+            seq = st.session_state.get("ln_seq", len(st.session_state.ln_ids))
+            st.session_state.ln_seq = seq + 1
+            lid = f"d{seq}"
             st.session_state.ln_ids.append(lid)
             st.session_state.ln_tipo[lid] = "dia"
         if c2.button("➕ Promedio"):
-            lid = "p" + str(len(st.session_state.ln_ids))
+            seq = st.session_state.get("ln_seq", len(st.session_state.ln_ids))
+            st.session_state.ln_seq = seq + 1
+            lid = f"p{seq}"
             st.session_state.ln_ids.append(lid)
             st.session_state.ln_tipo[lid] = "promedio"
 
@@ -229,14 +280,14 @@ def _configurador_lineas():
                 linea = {"mostrar": True, "fecha": "", "color": "#1F77B4", "estilo": "solid", "nombre": "Nuevo día"}
             with st.expander(f"Línea {idx + 1}: {linea.get('nombre', '')}"):
                 a, b = st.columns(2)
-                mostrar = a.checkbox("Mostrar", value=linea.get("mostrar", True), key=f"{lid}_m")
-                nombre = b.text_input("Nombre", value=linea.get("nombre", ""), key=f"{lid}_n")
-                color = st.color_picker("Color", value=linea.get("color", "#1F77B4"), key=f"{lid}_c")
-                estilo = st.selectbox("Estilo", ["solid", "dash", "dot"], index=["solid", "dash", "dot"].index(linea.get("estilo", "solid")), key=f"{lid}_e")
+                mostrar = a.checkbox("Mostrar", value=linea.get("mostrar", True), key=f"lnw_{lid}_m")
+                nombre = b.text_input("Nombre", value=linea.get("nombre", ""), key=f"lnw_{lid}_n")
+                color = st.color_picker("Color", value=linea.get("color", "#1F77B4"), key=f"lnw_{lid}_c")
+                estilo = st.selectbox("Estilo", ["solid", "dash", "dot"], index=["solid", "dash", "dot"].index(linea.get("estilo", "solid")), key=f"lnw_{lid}_e")
                 if tipo == "promedio":
                     d1, d2 = st.columns(2)
-                    desde = d1.text_input("Desde", value=linea.get("desde", ""), key=f"{lid}_d")
-                    hasta = d2.text_input("Hasta", value=linea.get("hasta", ""), key=f"{lid}_h")
+                    desde = d1.text_input("Desde", value=linea.get("desde", ""), key=f"lnw_{lid}_d")
+                    hasta = d2.text_input("Hasta", value=linea.get("hasta", ""), key=f"lnw_{lid}_h")
 
                     opciones_td = ["Todos", "Habíl", "Sábado", "Domingo/Festivo"]
                     td_raw = linea.get("tipo_dia") or kpi.extraer_tipo_dia_nombre(linea.get("nombre")) or "Todos"
@@ -244,10 +295,10 @@ def _configurador_lineas():
                     idx_td = opciones_td.index(td_norm) if td_norm in opciones_td else 0
 
                     c_td, c_top = st.columns(2)
-                    tipo_dia_sel = c_td.selectbox("Tipo de día", opciones_td, index=idx_td, key=f"{lid}_td")
+                    tipo_dia_sel = c_td.selectbox("Tipo de día", opciones_td, index=idx_td, key=f"lnw_{lid}_td")
 
                     val_top_init = int(linea.get("top") or kpi.extraer_top_nombre(linea.get("nombre")) or 0)
-                    top_n_sel = c_top.number_input("Top días (0 = todo el año)", min_value=0, max_value=366, value=val_top_init, step=1, key=f"{lid}_top")
+                    top_n_sel = c_top.number_input("Top días (0 = todo el año)", min_value=0, max_value=366, value=val_top_init, step=1, key=f"lnw_{lid}_top")
 
                     nl = {
                         "mostrar": mostrar,
@@ -262,17 +313,24 @@ def _configurador_lineas():
                     if top_n_sel > 0:
                         nl["top"] = int(top_n_sel)
                 else:
-                    fecha = st.text_input("Fecha (AAAA-MM-DD)", value=linea.get("fecha", ""), key=f"{lid}_f")
+                    fecha = st.text_input("Fecha (AAAA-MM-DD)", value=linea.get("fecha", ""), key=f"lnw_{lid}_f")
                     nl = {"mostrar": mostrar, "fecha": fecha, "color": color, "estilo": estilo, "nombre": nombre}
-                if st.button("🗑️ Eliminar esta línea", key=f"{lid}_del"):
+                if st.button("🗑️ Eliminar esta línea", key=f"lnw_{lid}_del"):
                     st.session_state.ln_ids.remove(lid)
                     st.session_state.ln_tipo.pop(lid, None)
                     st.rerun()
                 nuevas.append(nl)
 
-        st.session_state.lineas_activas = nuevas
+        col_guardar, col_aplicar = st.columns(2)
+        aplicar = col_aplicar.button("✅ Aplicar cambios al gráfico")
+        guardar = col_guardar.button("💾 Guardar configuración")
 
-        if st.button("💾 Guardar configuración"):
+        if aplicar:
+            # Previsualización en la sesión actual (sin tocar el archivo)
+            st.session_state.lineas_activas = nuevas
+            st.rerun()
+
+        if guardar:
             cfg = config_promedios
             ruta = Path(cfg.__file__)
             contenido = (
@@ -292,6 +350,9 @@ def _configurador_lineas():
             try:
                 ruta.write_text(contenido, encoding="utf-8")
                 cfg.LINEAS = nuevas
+                st.session_state["_ln_firma"] = repr(nuevas)
+                # El archivo queda como fuente de verdad: se descarta la previsualización.
+                st.session_state.pop("lineas_activas", None)
                 st.success("Guardado en archivo config_promedios.py")
             except Exception as e:
                 st.error(f"No se pudo guardar: {e}")
@@ -417,6 +478,7 @@ with col_linea:
         df_cfg = _aplicar_filtros(df_cfg, dim, filtro_corr, filtro_est, filtro_zona, cal, tipos=None)
         fig_linea = _figura_lineas(df_cfg, lineas, cal=cal, filtro_tipo_global=filtro_tipo)
         st.plotly_chart(fig_linea, width="stretch", key="fig_lineas_resumen")
+        _caption_resumen_lineas(df_cfg, lineas, cal=cal, filtro_tipo_global=filtro_tipo)
     else:
         fig_linea = go.Figure()
         st.info("Configura LINEAS en config_promedios.py (con mostrar: True).")
