@@ -128,7 +128,8 @@ def _aplicar_filtros(df, dim, corredores, estaciones, zonas=None, cal=None, tipo
 
 
 def _lineas_config():
-    return [l for l in config_promedios.LINEAS if l.get("mostrar", True)]
+    fuente = st.session_state.get("lineas_activas", config_promedios.LINEAS)
+    return [l for l in fuente if l.get("mostrar", True)]
 
 
 def _fechas_lineas(lineas):
@@ -266,6 +267,8 @@ def _configurador_lineas():
                     st.rerun()
                 nuevas.append(nl)
 
+        st.session_state.lineas_activas = nuevas
+
         if st.button("💾 Guardar configuración"):
             cfg = config_promedios
             ruta = Path(cfg.__file__)
@@ -286,9 +289,10 @@ def _configurador_lineas():
             try:
                 ruta.write_text(contenido, encoding="utf-8")
                 cfg.LINEAS = nuevas
-                st.success("Guardado. Recarga la página para ver los cambios.")
+                st.success("Guardado en archivo config_promedios.py")
             except Exception as e:
                 st.error(f"No se pudo guardar: {e}")
+        return nuevas
 
 
 # ------------------------------------------------------------------ DATOS Y FILTROS
