@@ -7,9 +7,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
+import importlib
 import config_promedios
+importlib.reload(config_promedios)
 import data_loader
 import kpi
+importlib.reload(kpi)
 import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Seguimiento diario", layout="wide", initial_sidebar_state="expanded")
