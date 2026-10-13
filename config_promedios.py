@@ -138,12 +138,9 @@ SEMANA_BASE = '3 - 9 ago'
 # Habil
 
 LINEAS = [
-    {'mostrar': False, 'desde': '2026-08-03', 'hasta': '2026-08-06', 'color': '#404040', 'estilo': 'solid', 'nombre': 'Promedio 03-06 ago'},
-    {'mostrar': False, 'desde': '2026-08-10', 'hasta': '2026-08-14', 'color': '#919191', 'estilo': 'dash', 'nombre': 'Promedio 10-14 ago'},
-    {'mostrar': False, 'desde': '2026-08-18', 'hasta': '2026-08-21', 'color': '#2f35b5', 'estilo': 'dash', 'nombre': 'Promedio 18-21 ago'}, 
-    {'mostrar': False, 'desde': '2026-08-24', 'hasta': '2026-08-28', 'color': '#8C564B', 'estilo': 'dash', 'nombre': 'Promedio 24-28 ago'}, 
+    
     {'mostrar': False, 'desde': '2026-10-05', 'hasta': '2026-10-09', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 05-09 oct'},
-    {'mostrar': True, 'desde': '2026-01-01', 'hasta': '2026-10-13', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Prom_Hab_Top_10_2026', 'tipo_dia': 'Habíl', 'top': 10},
+    {'mostrar': True, 'desde': '2026-10-05', 'hasta': '2026-10-09', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Prom_dias_altos_', 'tipo_dia': 'Habíl', 'top': 2},
 
     {'mostrar': True, 'fecha': '2026-10-13', 'color': '#FF00FF', 'estilo': 'solid', 'nombre': '13_Octubre'}
 
