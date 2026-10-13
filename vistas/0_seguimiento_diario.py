@@ -408,6 +408,21 @@ filtro_est = st.sidebar.multiselect(
     "Ruta Estacion", options=est_opciones, format_func=nombre_amigable, placeholder="Todas"
 )
 
+with st.sidebar.expander("🔎 Diagnóstico de datos"):
+    import config as _cfg
+    st.caption(f"FUENTE: `{getattr(_cfg, 'FUENTE', '?')}` · MOTOR: `{getattr(_cfg, 'USOS_MOTOR', '?')}`")
+    st.caption(f"Carpeta: `{getattr(_cfg, 'SHAREPOINT_DIR', '?')}`")
+    st.write(f"Días disponibles: **{len(dias)}**")
+    if dias:
+        st.write(f"Rango: {dias[0]} → {dias[-1]}")
+    if cal is not None and not cal.empty and "Dia.tipo" in cal.columns:
+        sub_hab = cal[
+            (cal["Dia.tipo"] == "Hab")
+            & (cal["fecha"] >= pd.Timestamp("2026-01-01"))
+            & (cal["fecha"] <= pd.Timestamp("2026-10-13"))
+        ]
+        st.write(f"Hábiles 2026 (calendario): **{len(sub_hab)}**")
+
 df_filtrado = df_cc
 if filtro_corr:
     df_filtrado = df_filtrado[df_filtrado["corredor_servicio"].isin(filtro_corr)]
