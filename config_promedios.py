@@ -89,7 +89,7 @@ ULTIMOS_DIAS_BARRAS = 21
 INCLUIR_HISTORICO = False
 # HORA_CORTE_HOY: última hora (incluida) que se muestra para el día de HOY en la línea.
 # Ej. 8 = mostrar hasta las 8:59 · 9 = hasta las 9:59 · None = mostrar todo (hasta la hora con datos).
-HORA_CORTE_HOY = 20
+HORA_CORTE_HOY = None
 CORREDORES_EXCLUIDOS = ['Aerosuspendido', 'Sin Identificar']
 ZONAS_EXCLUIDAS = ['Prueba']
 
@@ -142,7 +142,7 @@ LINEAS = [
     {'mostrar': False, 'desde': '2026-10-05', 'hasta': '2026-10-09', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Promedio 05-09 oct'},
     {'mostrar': True, 'desde': '2026-10-05', 'hasta': '2026-10-09', 'color': '#87CEEB', 'estilo': 'dash', 'nombre': 'Prom_dias_altos_', 'tipo_dia': 'Habíl', 'top': 2},
 
-    {'mostrar': True, 'fecha': '2026-10-14', 'color': '#FF00FF', 'estilo': 'solid', 'nombre': '14_Octubre'}
+    {'mostrar': True, 'fecha': '2026-10-15', 'color': '#FF00FF', 'estilo': 'solid', 'nombre': '15_Octubre'}
 
     ]
 '''
